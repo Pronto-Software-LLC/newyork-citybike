@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
+import { siteMetadata } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'New York City Bike',
-  description: 'Easy access to CitiBike stall locations and availability',
+  ...siteMetadata,
 };
 
 export default function RootLayout({
@@ -23,9 +21,7 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-          <Header />
           {children}
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
