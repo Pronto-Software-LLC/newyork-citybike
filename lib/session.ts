@@ -12,5 +12,5 @@ export async function signIn() {
 
 export async function signOut() {
   'use server';
-  return signOUT();
+  return signOUT({ redirectTo: '/' });
 }
