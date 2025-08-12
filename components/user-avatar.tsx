@@ -1,4 +1,5 @@
-import { auth, signIn, signOut } from '@/lib/auth/auth';
+// import { auth, signIn, signOut } from '@/lib/auth/auth';
+import { getCurrentUser, signIn, signOut } from '@/lib/session';
 import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -10,15 +11,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 export async function UserAvatar() {
-  const session = await auth();
+  const user = await getCurrentUser();
 
-  if (!session?.user) {
+  if (!user) {
     return (
-      <form
-        action={async () => {
-          'use server';
-          await signIn('github');
-        }}>
+      <form action={signIn}>
         <Button type="submit">Sign in</Button>
       </form>
     );
@@ -29,12 +26,12 @@ export async function UserAvatar() {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarImage src={session.user.image || '#'} />
+            <AvatarImage src={user.image || '#'} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+          <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
@@ -42,12 +39,10 @@ export async function UserAvatar() {
           <DropdownMenuItem>Subscription</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <form
-              action={async () => {
-                'use server';
-                await signOut();
-              }}>
-              <Button type="submit">Sign Out </Button>
+            <form action={signOut}>
+              <Button variant="ghost" type="submit">
+                Sign Out
+              </Button>
             </form>
           </DropdownMenuItem>
         </DropdownMenuContent>
