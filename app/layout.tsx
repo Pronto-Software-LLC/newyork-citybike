@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
+import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/footer';
 
 export const metadata: Metadata = {
   title: 'New York City Bike',
@@ -21,7 +23,9 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
+          <Header />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
