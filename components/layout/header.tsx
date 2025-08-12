@@ -1,9 +1,12 @@
+import { Icons } from '../icons';
 import { UserAvatar } from '../user-avatar';
 
 export function Header() {
   return (
     <header className="flex items-center justify-between px-4 py-2">
-      <h1 className="text-2xl font-bold">New York City Bike</h1>
+      <h1 className="text-2xl font-bold">
+        <Icons.sun /> Stations
+      </h1>
       <nav>
         <ul className="flex items-center gap-2">
           <li>
