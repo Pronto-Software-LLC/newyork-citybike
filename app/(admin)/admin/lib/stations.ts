@@ -1,5 +1,4 @@
 import { redis } from '@/lib/redis';
-// import { Station, StationInformation } from '@/types';
 
 const META_KEY = 'locations_meta';
 const DETAIL_KEY = 'locationsdetail';
@@ -8,31 +7,26 @@ const GEO_KEY = 'locations';
 export async function loadStations() {
   'use server';
 
-  // 1️⃣ Get cached metadata (last_updated and ttl)
+  // 1️⃣ Check cached metadata
   const metaJson = await redis.get(META_KEY);
   if (metaJson) {
     const meta = JSON.parse(metaJson) as { last_updated: number; ttl: number };
     const now = Math.floor(Date.now() / 1000);
 
     if (now - meta.last_updated < meta.ttl) {
-      // Cache is fresh — return from Redis
-      console.log('Using cached station data from Upstash');
-      const stationsMap = await redis.hgetall(DETAIL_KEY);
-      return Object.values(stationsMap || {}).map((s) =>
-        JSON.parse(s as string)
-      );
-      // return;
+      console.log('Station cache is fresh — no update needed');
+      return; // ✅ Do nothing if cache is valid
     }
   }
 
-  // 2️⃣ Otherwise fetch from API
+  // 2️⃣ Fetch from API if stale or missing
   console.log('Fetching fresh station data from API...');
   const res = await fetch(
     'https://gbfs.citibikenyc.com/gbfs/en/station_information.json'
   );
   const data = await res.json();
 
-  // Save meta for TTL tracking
+  // 3️⃣ Update meta
   await redis.set(
     META_KEY,
     JSON.stringify({
@@ -41,15 +35,13 @@ export async function loadStations() {
     })
   );
 
-  // Save stations to Redis
+  // 4️⃣ Save stations into Valkey
   await loadStationInformationIntoValkey(data.data.stations);
 
-  return data.data.stations;
-  // return;
+  console.log(`Station data refreshed from API`);
 }
 
 async function loadStationInformationIntoValkey(stations) {
-  // Use pipeline for efficiency
   const pipeline = redis.pipeline();
 
   stations.forEach((station) => {
@@ -57,7 +49,7 @@ async function loadStationInformationIntoValkey(stations) {
       GEO_KEY,
       station.lon, // longitude
       station.lat, // latitude
-      station.station_id // member);
+      station.station_id // member
     );
 
     pipeline.hset(DETAIL_KEY, {
