@@ -1,11 +1,10 @@
 'use server';
 import { redis } from '@/lib/redis';
 
-const META_KEY = 'locations_meta';
-const DETAIL_KEY = 'locationsdetail';
-const GEO_KEY = 'locations';
+const META_KEY = 'station_status_meta';
+const DETAIL_KEY = 'station_status';
 
-export async function loadStations() {
+export async function loadStationsStatus() {
   // 1️⃣ Check cached metadata
   const metaJson = await redis.get(META_KEY);
   if (metaJson) {
@@ -13,15 +12,15 @@ export async function loadStations() {
     const now = Math.floor(Date.now() / 1000);
 
     if (now - meta.last_updated < meta.ttl) {
-      console.log('Station cache is fresh — no update needed');
+      console.log('🆗 Station Status cache is fresh — no update needed');
       return; // ✅ Do nothing if cache is valid
     }
   }
 
   // 2️⃣ Fetch from API if stale or missing
-  console.log('Fetching fresh station data from API...');
+  console.log('🔆 Fetching fresh station Status data from API...');
   const res = await fetch(
-    'https://gbfs.citibikenyc.com/gbfs/en/station_information.json'
+    'https://gbfs.citibikenyc.com/gbfs/en/station_status.json'
   );
   const data = await res.json();
 
@@ -35,27 +34,20 @@ export async function loadStations() {
   );
 
   // 4️⃣ Save stations into Valkey
-  await loadStationInformationIntoValkey(data.data.stations);
+  await loadStationStatusIntoValkey(data.data.stations);
 
-  console.log(`Station data refreshed from API`);
+  console.log(`❇️ Station Status data refreshed from API`);
 }
 
-async function loadStationInformationIntoValkey(stations) {
+async function loadStationStatusIntoValkey(stations) {
   const pipeline = redis.pipeline();
 
   stations.forEach((station) => {
-    pipeline.geoadd(
-      GEO_KEY,
-      station.lon, // longitude
-      station.lat, // latitude
-      station.station_id // member
-    );
-
     pipeline.hset(DETAIL_KEY, {
       [station.station_id]: JSON.stringify(station),
     });
   });
 
   await pipeline.exec();
-  console.log(`Saved ${stations.length} stations to Valkey`);
+  console.log(`Saved ${stations.length} stations Status to Valkey`);
 }

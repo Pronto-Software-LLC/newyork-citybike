@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { loadNearbyStations } from '../lib/stations';
 import { Station } from './station';
+import { loadStationsStatus } from '@/app/(admin)/admin/lib/stations-status';
+import { loadStations } from '@/app/(admin)/admin/lib/stations';
 
 export default function LocationWatcher() {
   const [status, setStatus] = useState('Waiting for location...');
@@ -20,6 +22,8 @@ export default function LocationWatcher() {
         const { latitude, longitude } = position.coords;
 
         try {
+          await loadStations();
+          await loadStationsStatus();
           const data = await loadNearbyStations(latitude, longitude);
           setLocationData(data);
           setStatus('Data received from server.');

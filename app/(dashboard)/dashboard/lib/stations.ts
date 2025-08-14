@@ -40,6 +40,15 @@ export async function loadNearbyStations(lat: number, lon: number) {
       const station =
         typeof stationJson === 'string' ? JSON.parse(stationJson) : stationJson;
 
+      const stationStatusJson = await redis.hget(
+        'station_status',
+        r.member as string
+      );
+      const stationStatus =
+        typeof stationStatusJson === 'string'
+          ? JSON.parse(stationStatusJson)
+          : stationStatusJson;
+
       return {
         id: r.member,
         time: new Date().toISOString(),
@@ -54,6 +63,7 @@ export async function loadNearbyStations(lat: number, lon: number) {
         // Add coordinates to the station object
         coordinates: r.coord,
         ...station,
+        ...stationStatus,
       };
     })
   );
