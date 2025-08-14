@@ -14,9 +14,13 @@ export async function getUserIdFromSession(): Promise<string | null> {
   return session?.user?.id ?? null;
 }
 
+export type Session = {
+  sessionToken: string;
+};
+
 export async function getSessionId(): Promise<string | null> {
   const session = await auth();
-  return session?.sessionToken ?? null;
+  return (session as Session | null)?.sessionToken ?? null;
 }
 
 export async function getCurrentUser(): Promise<UserWithAdmin | null> {

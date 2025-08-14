@@ -3,7 +3,7 @@ import * as turf from '@turf/turf';
 
 function formatDistance(km: number) {
   const feet = convert(km, 'km').to('feet');
-  return parseInt(feet) + ' ft';
+  return parseInt(feet.toString()) + ' ft';
 }
 
 export function calculateDistance(

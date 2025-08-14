@@ -1,43 +1,18 @@
 'use server';
+import { apiDataLoader } from '@/lib/api';
 import { redis } from '@/lib/redis';
 
-const META_KEY = 'locations_meta';
 const DETAIL_KEY = 'locationsdetail';
 const GEO_KEY = 'locations';
 
 export async function loadStations() {
-  // 1️⃣ Check cached metadata
-  const metaJson = await redis.get(META_KEY);
-  if (metaJson) {
-    const meta = JSON.parse(metaJson) as { last_updated: number; ttl: number };
-    const now = Math.floor(Date.now() / 1000);
-
-    if (now - meta.last_updated < meta.ttl) {
-      console.log('Station cache is fresh — no update needed');
-      return; // ✅ Do nothing if cache is valid
-    }
-  }
-
-  // 2️⃣ Fetch from API if stale or missing
-  console.log('Fetching fresh station data from API...');
-  const res = await fetch(
-    'https://gbfs.citibikenyc.com/gbfs/en/station_information.json'
-  );
-  const data = await res.json();
-
-  // 3️⃣ Update meta
-  await redis.set(
-    META_KEY,
-    JSON.stringify({
-      last_updated: data.last_updated,
-      ttl: data.ttl,
+  return (
+    await apiDataLoader({
+      DETAIL_KEY,
+      urlApi: 'https://gbfs.citibikenyc.com/gbfs/en/station_information.json',
+      callback: loadStationInformationIntoValkey,
     })
-  );
-
-  // 4️⃣ Save stations into Valkey
-  await loadStationInformationIntoValkey(data.data.stations);
-
-  console.log(`Station data refreshed from API`);
+  )();
 }
 
 async function loadStationInformationIntoValkey(stations) {
