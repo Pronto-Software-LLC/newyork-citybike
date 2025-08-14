@@ -23,7 +23,7 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /path/to/your/project || exit 1
+            cd /home/deploy/website/newyork-citybike || exit 1
             git fetch origin dev
             git checkout dev
             git pull origin dev
