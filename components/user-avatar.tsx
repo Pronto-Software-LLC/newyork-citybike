@@ -37,11 +37,11 @@ export async function UserAvatar() {
           <DropdownMenuSeparator />
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
-          {user.isAdmin && (
-            <DropdownMenuItem>
-              <Link href="/admin">Admin</Link>
-            </DropdownMenuItem>
-          )}
+
+          <DropdownMenuItem>
+            <Link href="/admin">Admin</Link>
+          </DropdownMenuItem>
+
           <DropdownMenuItem>Subscription</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>

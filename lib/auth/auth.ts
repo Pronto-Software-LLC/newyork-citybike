@@ -1,10 +1,12 @@
 import NextAuth from 'next-auth';
-import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
+import { XataAdapter } from '@auth/xata-adapter';
 import GitHub from 'next-auth/providers/github';
-import { redis } from '../redis';
+import { XataClient } from '@/lib/xata'; // Or wherever you've chosen for the generated client
+
+const client = new XataClient();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: UpstashRedisAdapter(redis),
+  adapter: XataAdapter(client),
   providers: [GitHub],
   callbacks: {
     session: ({ session, user }) => {

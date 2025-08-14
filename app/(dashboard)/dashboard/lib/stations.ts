@@ -4,26 +4,31 @@ import { bearings, calculateDistance } from '@/lib/distance';
 import { redis } from '@/lib/redis';
 
 export async function loadNearbyStations(lat: number, lon: number) {
-  const results = await redis.geosearch(
+  const rawResults = await redis.geosearch(
     'locations',
-    {
-      type: 'FROMLONLAT',
-      coordinate: {
-        lon,
-        lat,
-      },
-    },
-    {
-      type: 'BYRADIUS',
-      radius: 1, // 1 km radius
-      radiusType: 'KM',
-    },
+    'FROMLONLAT',
+    lon,
+    lat,
+    'BYRADIUS',
+    1, // radius value
+    'KM', // radius unit
     'ASC',
-    {
-      withCoord: true,
-      withDist: true,
-    }
+    'WITHCOORD',
+    'WITHDIST'
   );
+
+  const results = [];
+  for (let i = 0; i < rawResults.length; i++) {
+    const [member, dist, coords] = rawResults[i];
+    results.push({
+      member,
+      dist: parseFloat(dist),
+      coord: {
+        lon: parseFloat(coords[0]),
+        lat: parseFloat(coords[1]),
+      },
+    });
+  }
 
   // Now results is an array of objects
   const stations = await Promise.all(
@@ -43,9 +48,9 @@ export async function loadNearbyStations(lat: number, lon: number) {
           lat,
           lon,
           r?.coord?.lat,
-          r?.coord?.long
+          r?.coord?.lon
         ),
-        bearings: bearings(lat, lon, r?.coord?.lat, r?.coord?.long),
+        bearings: bearings(lat, lon, r?.coord?.lat, r?.coord?.lon),
         // Add coordinates to the station object
         coordinates: r.coord,
         ...station,
