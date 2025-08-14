@@ -10,6 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
+
 export async function UserAvatar() {
   const user = await getCurrentUser();
 
@@ -35,7 +37,11 @@ export async function UserAvatar() {
           <DropdownMenuSeparator />
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
+          {user.isAdmin && (
+            <DropdownMenuItem>
+              <Link href="/admin">Admin</Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem>Subscription</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>

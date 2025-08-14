@@ -1,7 +1,10 @@
+import LocationWatcher from './components/location-watcher';
+
 export default async function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-      Authenticated page
-    </div>
+    <main>
+      <h1>Live Location Tracker</h1>
+      <LocationWatcher />
+    </main>
   );
 }

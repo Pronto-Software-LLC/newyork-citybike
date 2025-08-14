@@ -1,4 +1,6 @@
 import { SiteConfig } from '@/types';
+import { IdCard } from 'lucide-react';
+import type { Viewport, Metadata } from 'next';
 
 const siteConfig: SiteConfig = {
   name: 'New York City Bike',
@@ -11,7 +13,7 @@ const siteConfig: SiteConfig = {
   },
 };
 
-export const siteMetadata = {
+export const siteMetadata: Metadata = {
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
@@ -31,10 +33,7 @@ export const siteMetadata = {
     },
   ],
   creator: 'shadcn',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -57,3 +56,12 @@ export const siteMetadata = {
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
+
+export const siteViewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+};
+
+export const admins = [process.env.ADMIN_ID];

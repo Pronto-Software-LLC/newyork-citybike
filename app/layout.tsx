@@ -1,10 +1,13 @@
-import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
-import { siteMetadata } from '@/config/site';
+import { siteMetadata, siteViewport } from '@/config/site';
 
-export const metadata: Metadata = {
+export const metadata = {
   ...siteMetadata,
+};
+
+export const viewport = {
+  ...siteViewport,
 };
 
 export default function RootLayout({

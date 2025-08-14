@@ -1,14 +1,17 @@
 import NextAuth from 'next-auth';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
-import { Redis } from '@upstash/redis';
 import GitHub from 'next-auth/providers/github';
-
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_URL!,
-  token: process.env.UPSTASH_REDIS_TOKEN!,
-});
+import { redis } from '../redis';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: UpstashRedisAdapter(redis),
   providers: [GitHub],
+  callbacks: {
+    session: ({ session, user }) => {
+      if (session.user) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
+  },
 });
