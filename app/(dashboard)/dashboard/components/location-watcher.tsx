@@ -6,9 +6,17 @@ import { Station } from './station';
 import { loadStationsStatus } from '@/app/(admin)/admin/lib/stations-status';
 import { loadStations } from '@/app/(admin)/admin/lib/stations';
 
+interface StationType {
+  id: string;
+  name: string;
+  distance: number;
+  coordinates: [number, number];
+}
+
 export default function LocationWatcher() {
   const [status, setStatus] = useState('Waiting for location...');
-  const [locationData, setLocationData] = useState<unknown>(null);
+  const [locationData, setLocationData] = useState<StationType[]>([]);
+  const [lastUpdate, setLastUpdate] = useState(0);
 
   useEffect(() => {
     if (!('geolocation' in navigator)) {
@@ -18,6 +26,12 @@ export default function LocationWatcher() {
 
     const watchId = navigator.geolocation.watchPosition(
       async (position) => {
+        const now = Date.now();
+        if (now - lastUpdate < 5000) {
+          return;
+        }
+        setLastUpdate(now);
+
         setStatus('Location updated, sending to server...');
         const { latitude, longitude } = position.coords;
 
@@ -40,7 +54,7 @@ export default function LocationWatcher() {
     );
 
     return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
+  }, [lastUpdate]);
 
   return (
     <div className="p-4 rounded shadow">
