@@ -17,9 +17,18 @@ export async function loadNearbyStations(lat: number, lon: number) {
     'WITHDIST'
   );
 
-  const results = [];
+  type Result = {
+    member: string;
+    dist: number;
+    coord: { lon: number; lat: number };
+  };
+  const results: Result[] = [];
   for (let i = 0; i < rawResults.length; i++) {
-    const [member, dist, coords] = rawResults[i];
+    const [member, dist, coords] = rawResults[i] as [
+      string,
+      string,
+      [string, string]
+    ];
     results.push({
       member,
       dist: parseFloat(dist),
