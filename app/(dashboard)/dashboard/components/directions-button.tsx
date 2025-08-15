@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Milestone } from 'lucide-react';
+import { SendHorizontal } from 'lucide-react';
 import React from 'react';
 
 interface AppleMapsButtonProps {
@@ -27,7 +27,7 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
 
   return (
     <Button variant="secondary" onClick={handleClick}>
-      {label ? label : <Milestone />}
+      {label ? label : <SendHorizontal /> + ' Apple Maps'}
     </Button>
   );
 };
