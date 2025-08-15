@@ -75,7 +75,7 @@ export default function LocationWatcher() {
     );
   }
 
-  if (status === LocStatus.Waiting) {
+  if (locationData.length === 0) {
     return (
       <div className="p-4 rounded shadow">
         <div className="flex flex-col gap-6">
@@ -91,7 +91,6 @@ export default function LocationWatcher() {
 
   return (
     <div className="p-4 rounded shadow">
-      <h2>Location Tracker</h2>
       <p>Status: {status}</p>
       <div className="flex flex-col gap-6">
         {locationData &&

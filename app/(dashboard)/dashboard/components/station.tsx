@@ -43,12 +43,11 @@ export function Station({ station }: LiveStationsProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row items-center gap-4">
           <DirectionsButton
             latitude={station.coordinates[1]}
             longitude={station.coordinates[0]}
             labelMap={station.name}
-            label="🚲"
           />
           <h1 className="text-2xl">{station.num_docks_available}</h1>
         </div>

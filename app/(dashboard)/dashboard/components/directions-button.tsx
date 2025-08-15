@@ -25,5 +25,9 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
     window.open(url, '_blank');
   };
 
-  return <Button onClick={handleClick}>{label ? label : <Milestone />}</Button>;
+  return (
+    <Button variant="secondary" onClick={handleClick}>
+      {label ? label : <Milestone />}
+    </Button>
+  );
 };
