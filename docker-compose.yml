@@ -4,13 +4,12 @@ services:
   app:
     build: .
     container_name: nycbike_app
+    network_mode: host
     restart: always
     env_file:
       - .env
     depends_on:
       - valkey
-    ports:
-      - '3000:3000' # expose to host so Caddy can proxy
 
   valkey:
     image: valkey/valkey:latest
