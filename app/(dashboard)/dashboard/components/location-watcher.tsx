@@ -11,6 +11,7 @@ interface StationType {
   name: string;
   distance: number;
   coordinates: [number, number];
+  distanceFormatted: string;
 }
 
 export default function LocationWatcher() {
