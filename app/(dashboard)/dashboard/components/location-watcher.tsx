@@ -14,6 +14,8 @@ interface StationType {
   coordinates: [number, number];
   distanceFormatted: string;
   num_docks_available: number;
+  bikes: number;
+  ebikes: number;
 }
 
 enum LocStatus {
