@@ -4,7 +4,7 @@ services:
   app:
     build: .
     container_name: nycbike_app
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
     depends_on:
@@ -19,7 +19,7 @@ services:
   valkey:
     image: valkey/valkey:latest
     container_name: valkey
-    restart: unless-stopped
+    restart: always
     volumes:
       - valkey_data:/data
     command: ['valkey-server', '--appendonly', 'yes']
