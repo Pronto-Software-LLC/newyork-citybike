@@ -42,7 +42,6 @@ export function Station({ station }: LiveStationsProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
         <DirectionsButton
           latitude={station.coordinates[0]}
           longitude={station.coordinates[1]}
