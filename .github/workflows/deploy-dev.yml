@@ -3,7 +3,7 @@ name: Deploy Dev to Server
 on:
   push:
     branches:
-      - dev # Only deploy when dev branch changes
+      - dev
 
 jobs:
   deploy:
@@ -22,20 +22,18 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
             cd /home/deploy/website/newyork-citybike
             git pull origin dev
 
-            # Write all required environment variables without indentation
-            cat > .env <<'ENV_EOF'
-NODE_ENV=production
+            # Write all required environment variables
+            echo "NODE_ENV=production
 NEXTAUTH_URL=https://www.angedell.it
 NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
 MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}
 VALKEY_HOST=valkey
-VALKEY_PORT=6379
-ENV_EOF
+VALKEY_PORT=6379" > .env
 
             # Rebuild and restart the app container
             docker compose up -d --build app
-          EOF
+          '
