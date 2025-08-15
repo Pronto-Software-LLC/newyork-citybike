@@ -75,32 +75,16 @@ export default function LocationWatcher() {
     );
   }
 
-  if (status === LocStatus.Error) {
-    return (
-      <div className="p-4 rounded shadow">Error retrieving location data.</div>
-    );
-  }
-
   if (status === LocStatus.Waiting) {
     return (
       <div className="p-4 rounded shadow">
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-      </div>
-    );
-  }
-
-  if (locationData.length === 0) {
-    return <div className="p-4 rounded shadow">No stations found nearby.</div>;
-  }
-
-  if (status === LocStatus.Updated) {
-    return (
-      <div className="p-4 rounded shadow">
-        Location updated, fetching nearby stations...
+        <div className="flex flex-col gap-6">
+          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
+          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
+          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
+          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
+          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
+        </div>
       </div>
     );
   }
