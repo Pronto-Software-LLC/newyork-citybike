@@ -20,6 +20,8 @@ import {
 //   DialogDescription,
 // } from '@/components/ui/dialog';
 import { DirectionsButton } from './directions-button';
+import { Button } from '@/components/ui/button';
+import { BatteryCharging, Bike, CircleParking } from 'lucide-react';
 
 interface LiveStationsProps {
   station: {
@@ -29,6 +31,8 @@ interface LiveStationsProps {
     coordinates: [number, number];
     distanceFormatted: string;
     num_docks_available: number;
+    bikes: number;
+    ebikes: number;
   };
 }
 
@@ -43,31 +47,49 @@ export function Station({ station }: LiveStationsProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex items-center gap-4">
+          <Button
+            variant={
+              station.num_docks_available > 0 ? 'outline' : 'destructive'
+            }>
+            <div className="flex items-center gap-2">
+              <CircleParking width={80} height={80} />{' '}
+              {station.num_docks_available}
+            </div>
+          </Button>
+          <Button variant={station.bikes > 0 ? 'outline' : 'destructive'}>
+            <div className="flex items-center gap-2">
+              <Bike width={80} height={80} /> <span>{station.bikes}</span>
+            </div>
+          </Button>
+          <Button variant={station.ebikes > 0 ? 'outline' : 'destructive'}>
+            <div className="flex items-center gap-2">
+              <BatteryCharging width={80} height={80} /> {station.ebikes}
+            </div>
+          </Button>
           <DirectionsButton
             latitude={station.coordinates[1]}
             longitude={station.coordinates[0]}
             labelMap={station.name}
           />
-          <h1 className="text-2xl">{station.num_docks_available}</h1>
         </div>
       </CardContent>
       {/* Uncomment if you want to add a dialog for more details */}
       {/* <Dialog>
-            <DialogTrigger>
-              <Button>details</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>details</DialogTitle>
-                <DialogDescription>
-                  <ScrollArea className="h-[200px] min-w-screen rounded-md border p-4">
-                    <pre>{JSON.stringify(station, null, 2)}</pre>
-                  </ScrollArea>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog> */}
+        <DialogTrigger>
+          <Button>details</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>details</DialogTitle>
+            <DialogDescription>
+              <ScrollArea className="h-[200px] min-w-screen rounded-md border p-4">
+                <pre>{JSON.stringify(station, null, 2)}</pre>
+              </ScrollArea>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog> */}
 
       {/* <CardFooter>
         <p>Card Footer</p>
