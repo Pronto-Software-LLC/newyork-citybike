@@ -28,13 +28,12 @@ jobs:
 
             # Write all required environment variables
             echo "NODE_ENV=production
-NEXTAUTH_URL=https://www.angedell.it
-NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
-MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}
-VALKEY_HOST=valkey
-VALKEY_PORT=6379" > .env
+            NEXTAUTH_URL=https://www.angedell.it
+            NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+            MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}
+            VALKEY_HOST=valkey
+            VALKEY_PORT=6379" > .env
 
             # Rebuild and restart the app container only
             docker compose up -d --build app
           EOF
-
