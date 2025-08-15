@@ -18,8 +18,8 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
   const handleClick = () => {
     // Apple Maps URL scheme
     const url =
-      `https://maps.apple.com/?sll=${latitude},${longitude}?t=r?dirflg=w&z=5` +
-      (labelMap ? `&q=${encodeURIComponent(labelMap)}` : '');
+      `https://maps.apple.com/?sll=${latitude},${longitude}&t=r&z=5` +
+      (labelMap ? `&daddr=${encodeURIComponent(labelMap)}&dirflg=w` : '');
     window.open(url, '_blank');
   };
 
