@@ -26,13 +26,15 @@ jobs:
             cd /home/deploy/website/newyork-citybike
             git pull origin dev
 
-            # Write all required environment variables
-            echo "NODE_ENV=production
+            # Write all required environment variables using here-doc
+            cat > .env <<'"'"'ENV_EOF'"'"'
+NODE_ENV=production
 NEXTAUTH_URL=https://www.angedell.it
 NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
 MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}
 VALKEY_HOST=valkey
-VALKEY_PORT=6379" > .env
+VALKEY_PORT=6379
+ENV_EOF
 
             # Rebuild and restart the app container
             docker compose up -d --build app
