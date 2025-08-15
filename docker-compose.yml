@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: nycbike_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - valkey
+    environment:
+      - NODE_ENV=production
+      - VALKEY_HOST=valkey
+      - VALKEY_PORT=6379
+    ports:
+      - '3000:3000' # expose to host so Caddy can proxy
+
+  valkey:
+    image: valkey/valkey:latest
+    container_name: valkey
+    restart: unless-stopped
+    volumes:
+      - valkey_data:/data
+    command: ['valkey-server', '--appendonly', 'yes']
+    ports:
+      - '6379:6379' # Optional: expose for local testing
+
+volumes:
+  valkey_data:

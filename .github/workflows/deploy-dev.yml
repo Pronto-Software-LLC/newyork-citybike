@@ -20,15 +20,11 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to Server
+      - name: Deploy via SSH
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /home/deploy/website/newyork-citybike || exit 1
-            git fetch origin dev
-            git checkout dev
+            cd /home/deploy/website/newyork-citybike
             git pull origin dev
-            # If you need to build:
-            # npm install && npm run build
-            # Or restart service:
-            # systemctl restart my-app
+            docker compose build app
+            docker compose up -d app
           EOF
