@@ -41,28 +41,30 @@ export function Station({ station }: LiveStationsProps) {
           {station.distanceFormatted}
         </CardAction>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <DirectionsButton
-          latitude={station.coordinates[1]}
-          longitude={station.coordinates[0]}
-          labelMap={station.name}
-          label="🚲"
-        />
-        <Dialog>
-          <DialogTrigger>
-            <Button>details</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>details</DialogTitle>
-              <DialogDescription>
-                <ScrollArea className="h-[200px] min-w-screen rounded-md border p-4">
-                  <pre>{JSON.stringify(station, null, 2)}</pre>
-                </ScrollArea>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+      <CardContent>
+        <div className="flex flex-col gap-4">
+          <DirectionsButton
+            latitude={station.coordinates[1]}
+            longitude={station.coordinates[0]}
+            labelMap={station.name}
+            label="🚲"
+          />
+          <Dialog>
+            <DialogTrigger>
+              <Button>details</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>details</DialogTitle>
+                <DialogDescription>
+                  <ScrollArea className="h-[200px] min-w-screen rounded-md border p-4">
+                    <pre>{JSON.stringify(station, null, 2)}</pre>
+                  </ScrollArea>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
       </CardContent>
       <CardFooter>
         <p>Card Footer</p>
