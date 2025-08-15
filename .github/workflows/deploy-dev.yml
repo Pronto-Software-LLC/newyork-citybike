@@ -32,8 +32,6 @@ jobs:
             echo "NEXTAUTH_URL=https://www.angedell.it" >> .env
             echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
             echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
-            echo "VALKEY_HOST=valkey" >> .env
-            echo "VALKEY_PORT=6379" >> .env
 
             # Rebuild and restart the app container
             docker compose up -d --build app
