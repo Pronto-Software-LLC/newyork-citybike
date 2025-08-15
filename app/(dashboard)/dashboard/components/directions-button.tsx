@@ -27,7 +27,7 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
 
   return (
     <Button variant="secondary" onClick={handleClick}>
-      {label ? label : <Send /> + ' Apple Maps'}
+      <Send /> Apple Maps
     </Button>
   );
 };
