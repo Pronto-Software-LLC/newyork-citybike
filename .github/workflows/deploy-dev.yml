@@ -27,10 +27,6 @@ jobs:
             git pull origin dev
 
             # Write each environment variable line-by-line
-            echo "NODE_ENV=production" > .env
-            echo "AUTH_TRUST_HOST=https://www.angedell.it" >> .env
-            echo "NEXTAUTH_URL=https://www.angedell.it" >> .env
-            echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
             echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
 
             # Rebuild and restart the app container
