@@ -12,6 +12,7 @@ interface StationType {
   distance: number;
   coordinates: [number, number];
   distanceFormatted: string;
+  num_docks_available: number;
 }
 
 export default function LocationWatcher() {

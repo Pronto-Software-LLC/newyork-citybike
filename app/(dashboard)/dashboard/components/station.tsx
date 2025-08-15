@@ -28,6 +28,7 @@ interface LiveStationsProps {
     distance: number;
     coordinates: [number, number];
     distanceFormatted: string;
+    num_docks_available: number;
   };
 }
 
@@ -36,7 +37,7 @@ export function Station({ station }: LiveStationsProps) {
     <Card key={station.id}>
       <CardHeader>
         <CardTitle>{station.name}</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>docks available</CardDescription>
         <CardAction className="text-2xl">
           {station.distanceFormatted}
         </CardAction>
@@ -49,7 +50,11 @@ export function Station({ station }: LiveStationsProps) {
             labelMap={station.name}
             label="🚲"
           />
-          <Dialog>
+          <h1 className="text-2xl">{station.num_docks_available}</h1>
+        </div>
+      </CardContent>
+      {/* Uncomment if you want to add a dialog for more details */}
+      {/* <Dialog>
             <DialogTrigger>
               <Button>details</Button>
             </DialogTrigger>
@@ -63,12 +68,11 @@ export function Station({ station }: LiveStationsProps) {
                 </DialogDescription>
               </DialogHeader>
             </DialogContent>
-          </Dialog>
-        </div>
-      </CardContent>
-      <CardFooter>
+          </Dialog> */}
+
+      {/* <CardFooter>
         <p>Card Footer</p>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

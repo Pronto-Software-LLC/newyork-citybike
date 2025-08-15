@@ -17,9 +17,11 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
 }) => {
   const handleClick = () => {
     // Apple Maps URL scheme
+    // dirflg=b is for biking directions
+    // dirflg=w is for walking directions
     const url =
       `https://maps.apple.com/?sll=${latitude},${longitude}&t=r&z=5` +
-      (labelMap ? `&daddr=${encodeURIComponent(labelMap)}&dirflg=w` : '');
+      (labelMap ? `&daddr=${encodeURIComponent(labelMap)}&dirflg=b` : '');
     window.open(url, '_blank');
   };
 
