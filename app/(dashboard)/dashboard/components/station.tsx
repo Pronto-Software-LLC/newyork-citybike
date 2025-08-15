@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { DirectionsButton } from './directions-button';
 
 interface LiveStationsProps {
   station: {
@@ -42,6 +43,10 @@ export function Station({ station }: LiveStationsProps) {
       </CardHeader>
       <CardContent>
         <p>Card Content</p>
+        <DirectionsButton
+          latitude={station.coordinates[0]}
+          longitude={station.coordinates[1]}
+        />
         <Dialog>
           <DialogTrigger>
             <Button>details</Button>
