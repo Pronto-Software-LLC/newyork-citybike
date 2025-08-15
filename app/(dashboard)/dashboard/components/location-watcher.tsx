@@ -74,16 +74,17 @@ export default function LocationWatcher() {
       </div>
     );
   }
-
+  //bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm
   if (locationData.length === 0) {
     return (
       <div className="p-4 rounded shadow">
         <div className="flex flex-col gap-6">
-          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
-          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
-          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
-          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
-          <Skeleton className="h-[125px] min-w-screen rounded-xl" />
+          <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
+          <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
+          <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
+          <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
+          <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
+          <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
         </div>
       </div>
     );
