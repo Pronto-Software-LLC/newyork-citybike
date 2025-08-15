@@ -43,8 +43,8 @@ export function Station({ station }: LiveStationsProps) {
       </CardHeader>
       <CardContent>
         <DirectionsButton
-          latitude={station.coordinates[0]}
-          longitude={station.coordinates[1]}
+          latitude={station.coordinates[1]}
+          longitude={station.coordinates[0]}
           labelMap={station.name}
           label="🚲"
         />

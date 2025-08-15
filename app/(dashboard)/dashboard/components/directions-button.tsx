@@ -17,7 +17,7 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
   const handleClick = () => {
     // Apple Maps URL scheme
     const url =
-      `https://maps.apple.com/?ll=${latitude},${longitude}` +
+      `https://maps.apple.com/?sll=${latitude},${longitude}?t=r` +
       (labelMap ? `&q=${labelMap}` : '');
     window.open(url, '_blank');
   };
