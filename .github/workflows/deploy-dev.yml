@@ -25,7 +25,16 @@ jobs:
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd /home/deploy/website/newyork-citybike
             git pull origin dev
-            echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" > .env
-            docker compose build app
-            docker compose up -d app
+
+            # Write all required environment variables
+            echo "NODE_ENV=production
+NEXTAUTH_URL=https://www.angedell.it
+NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}
+VALKEY_HOST=valkey
+VALKEY_PORT=6379" > .env
+
+            # Rebuild and restart the app container only
+            docker compose up -d --build app
           EOF
+
