@@ -57,7 +57,9 @@ export async function loadNearbyStations(lat: number, lon: number) {
         typeof stationStatusJson === 'string'
           ? JSON.parse(stationStatusJson)
           : stationStatusJson;
-
+      if (!station.num_docks_available) {
+        return null;
+      }
       return {
         id: r.member,
         time: new Date().toISOString(),
