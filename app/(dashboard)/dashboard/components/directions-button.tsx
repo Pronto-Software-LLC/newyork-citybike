@@ -5,16 +5,20 @@ interface AppleMapsButtonProps {
   latitude: number;
   longitude: number;
   label?: string;
+  labelMap?: string;
 }
 
 export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
   latitude,
   longitude,
   label = 'Open in Apple Maps',
+  labelMap,
 }) => {
   const handleClick = () => {
     // Apple Maps URL scheme
-    const url = `https://maps.apple.com/?ll=${latitude},${longitude}`;
+    const url =
+      `https://maps.apple.com/?ll=${latitude},${longitude}` +
+      (labelMap ? `&q=${labelMap}` : '');
     window.open(url, '_blank');
   };
 

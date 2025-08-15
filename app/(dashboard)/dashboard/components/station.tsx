@@ -45,6 +45,8 @@ export function Station({ station }: LiveStationsProps) {
         <DirectionsButton
           latitude={station.coordinates[0]}
           longitude={station.coordinates[1]}
+          labelMap={station.name}
+          label="🚲"
         />
         <Dialog>
           <DialogTrigger>
