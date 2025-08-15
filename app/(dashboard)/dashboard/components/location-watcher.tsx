@@ -94,7 +94,7 @@ export default function LocationWatcher() {
 
   return (
     <div className="p-4 rounded shadow">
-      <p>Status: {status}</p>
+      {/* <p>Status: {status}</p> */}
       <div className="flex flex-col gap-6">
         {locationData &&
           locationData.map((station) => (
