@@ -1,7 +1,7 @@
 import Valkey from 'iovalkey';
 
 export const redis = new Valkey({
-  port: process.env.VALKEY_PORT, // Valkey port
+  port: parseInt(process.env.VALKEY_PORT || '6379'), // Valkey port
   host: process.env.VALKEY_HOST, // Valkey host
   // username: 'default', // needs Valkey >= 6
   // password: 'my-top-secret',

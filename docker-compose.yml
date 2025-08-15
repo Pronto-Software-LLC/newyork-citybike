@@ -9,22 +9,16 @@ services:
       - .env
     depends_on:
       - valkey
-    environment:
-      - NODE_ENV=production
-      - VALKEY_HOST=valkey
-      - VALKEY_PORT=6379
     ports:
       - '3000:3000' # expose to host so Caddy can proxy
 
   valkey:
     image: valkey/valkey:latest
-    container_name: valkey
+    container_name: website_valkey
     restart: always
     volumes:
       - valkey_data:/data
     command: ['valkey-server', '--appendonly', 'yes']
-    ports:
-      - '6379:6379' # Optional: expose for local testing
 
 volumes:
   valkey_data:
