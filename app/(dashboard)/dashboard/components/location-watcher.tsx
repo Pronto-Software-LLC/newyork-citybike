@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { loadNearbyStations } from '../lib/stations';
 import { Station } from './station';
-import { loadStationsStatus } from '@/app/(admin)/admin/lib/stations-status';
-import { loadStations } from '@/app/(admin)/admin/lib/stations';
+import { loadStationsStatus } from '@/lib/stations-status';
+import { loadStations } from '@/lib/stations';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface StationType {

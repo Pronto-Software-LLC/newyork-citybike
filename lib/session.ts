@@ -25,12 +25,6 @@ export async function getSessionId(): Promise<string | null> {
 
 export async function getCurrentUser(): Promise<UserWithAdmin | null> {
   const session = await auth();
-  if (admins.includes(session?.user?.id)) {
-    return {
-      ...session?.user,
-      isAdmin: true,
-    };
-  }
   return session?.user ?? null;
 }
 

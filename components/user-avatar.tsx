@@ -35,14 +35,7 @@ export async function UserAvatar() {
         <DropdownMenuContent>
           <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-
-          <DropdownMenuItem>
-            <Link href="/admin">Admin</Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <form action={signOut}>
