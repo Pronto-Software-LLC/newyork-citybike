@@ -9,21 +9,7 @@ export function Header() {
         <span className="ml-2">NYC Bike Info</span>
       </h1>
       <nav>
-        <ul className="flex items-center gap-2">
-          {/* <li>
-            <a href="#" className="hover:underline">
-              Stations
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:underline">
-              About
-            </a>
-          </li> */}
-          <li>
-            <UserAvatar />
-          </li>
-        </ul>
+        <UserAvatar />
       </nav>
     </header>
   );

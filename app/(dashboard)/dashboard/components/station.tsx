@@ -21,7 +21,23 @@ import {
 // } from '@/components/ui/dialog';
 import { DirectionsButton } from './directions-button';
 import { Button } from '@/components/ui/button';
-import { BatteryCharging, Bike, CircleParking } from 'lucide-react';
+import {
+  BatteryCharging,
+  Bike,
+  ChevronDown,
+  CircleParking,
+} from 'lucide-react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface LiveStationsProps {
   station: {
