@@ -11,11 +11,10 @@ export async function apiDataLoader(options: DataToLoad) {
   return async () => {
     const throttleKey = `${options.DETAIL_KEY}:throttle`;
 
-    // Try to set throttle key for 10 seconds
-    const ok = await redis.set(throttleKey, '1', 'EX', 50, 'NX');
+    const isFresh = await redis.get(throttleKey);
 
-    if (ok !== 'OK' && ok !== true) {
-      console.log(`🙅‍♂️ ${throttleKey} is already being updated`);
+    if (isFresh) {
+      console.log(`🙅‍♂️ ${options.DETAIL_KEY} is being delivered by cache`);
       return;
     }
 
@@ -23,10 +22,12 @@ export async function apiDataLoader(options: DataToLoad) {
     const response = await fetch(options.urlApi);
     const data = await response.json();
 
+    const now = Math.floor(new Date().getTime() / 1000);
+    await redis.set(throttleKey, '1', 'EX', now - data.last_updated, 'NX');
+
     // Save stations into Valkey
     // TODO refactor callback to use a more generic input data. 'data.data.stations'
     await options.callback(data.data.stations);
-
     console.log(`✅ ${options.DETAIL_KEY} data refreshed from API`);
   };
 }
