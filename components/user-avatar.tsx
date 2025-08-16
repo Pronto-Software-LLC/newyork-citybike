@@ -10,7 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Link from 'next/link';
+
+function initials(name: string | null | undefined): string {
+  if (!name) return '';
+  const parts = name.split(' ');
+  if (parts.length === 1) {
+    return parts[0].charAt(0).toUpperCase();
+  }
+  return parts[0].charAt(0).toUpperCase() + parts[1].charAt(0).toUpperCase();
+}
 
 export async function UserAvatar() {
   const user = await getCurrentUser();
@@ -29,7 +37,7 @@ export async function UserAvatar() {
         <DropdownMenuTrigger>
           <Avatar>
             <AvatarImage src={user.image || '#'} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>{initials(user.name)}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
