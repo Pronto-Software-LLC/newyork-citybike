@@ -10,16 +10,25 @@ export async function loadNearbyStations(lat: number, lon: number) {
     lon,
     lat,
     'BYRADIUS',
-    1, // radius value
+    0.5, // radius value
     'KM', // radius unit
     'ASC',
     'WITHCOORD',
     'WITHDIST'
   );
 
-  const results = [];
+  type Result = {
+    member: string;
+    dist: number;
+    coord: { lon: number; lat: number };
+  };
+  const results: Result[] = [];
   for (let i = 0; i < rawResults.length; i++) {
-    const [member, dist, coords] = rawResults[i];
+    const [member, dist, coords] = rawResults[i] as [
+      string,
+      string,
+      [string, string]
+    ];
     results.push({
       member,
       dist: parseFloat(dist),
@@ -48,7 +57,9 @@ export async function loadNearbyStations(lat: number, lon: number) {
         typeof stationStatusJson === 'string'
           ? JSON.parse(stationStatusJson)
           : stationStatusJson;
-
+      // if (station.is_installed + station.is_renting !== 2) {
+      //   return null;
+      // }
       return {
         id: r.member,
         time: new Date().toISOString(),
@@ -62,6 +73,11 @@ export async function loadNearbyStations(lat: number, lon: number) {
         bearings: bearings(lat, lon, r?.coord?.lat, r?.coord?.lon),
         // Add coordinates to the station object
         coordinates: r.coord,
+        bikes:
+          stationStatus.num_bikes_available -
+          stationStatus.num_ebikes_available,
+        ebikes: stationStatus.num_ebikes_available,
+        // Merge station and status data
         ...station,
         ...stationStatus,
       };

@@ -1,4 +1,3 @@
-import { admins } from '@/config/site';
 import { auth, signIn as signIN, signOut as signOUT } from '@/lib/auth/auth';
 
 type UserWithAdmin = {
@@ -14,25 +13,23 @@ export async function getUserIdFromSession(): Promise<string | null> {
   return session?.user?.id ?? null;
 }
 
+export type Session = {
+  sessionToken: string;
+};
+
 export async function getSessionId(): Promise<string | null> {
   const session = await auth();
-  return session?.sessionToken ?? null;
+  return (session as Session | null)?.sessionToken ?? null;
 }
 
 export async function getCurrentUser(): Promise<UserWithAdmin | null> {
   const session = await auth();
-  if (admins.includes(session?.user?.id)) {
-    return {
-      ...session?.user,
-      isAdmin: true,
-    };
-  }
   return session?.user ?? null;
 }
 
 export async function signIn() {
   'use server';
-  return signIN('github', { redirectTo: '/dashboard' });
+  return signIN(undefined, { redirectTo: '/dashboard' });
 }
 
 export async function signOut() {

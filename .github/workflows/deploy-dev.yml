@@ -1,0 +1,34 @@
+name: Deploy Dev to Server
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
+            cd /home/deploy/website/newyork-citybike
+            git pull origin dev
+
+            # Write each environment variable line-by-line
+            echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
+
+            # Rebuild and restart the app container
+            docker compose up -d --build app
+          '
