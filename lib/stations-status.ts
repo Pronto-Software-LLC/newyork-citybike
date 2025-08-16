@@ -10,6 +10,7 @@ export async function loadStationsStatus() {
       DETAIL_KEY,
       urlApi: 'https://gbfs.citibikenyc.com/gbfs/en/station_status.json',
       callback: loadStationStatusIntoValkey,
+      lastUpdatedKey: 'last_updated',
     })
   )();
 }
