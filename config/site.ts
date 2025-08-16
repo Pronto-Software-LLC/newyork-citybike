@@ -1,15 +1,14 @@
 import { SiteConfig } from '@/types';
-import { IdCard } from 'lucide-react';
 import type { Viewport, Metadata } from 'next';
 
 const siteConfig: SiteConfig = {
   name: 'New York City Bike',
   description: 'Easy access to CitiBike stall locations and availability',
-  url: 'https://tx.shadcn.com',
-  ogImage: 'https://tx.shadcn.com/og.jpg',
+  url: process.env.NEXTAUTH_URL as string,
+  ogImage: `${process.env.NEXTAUTH_URL}/og.jpg`,
   links: {
-    twitter: 'https://twitter.com/shadcn',
-    github: 'https://github.com/shadcn/taxonomy',
+    twitter: 'https://twitter.com/puzzino',
+    github: 'https://github.com/angedell',
   },
 };
 
@@ -20,19 +19,23 @@ export const siteMetadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    'Next.js',
-    'React',
-    'Tailwind CSS',
-    'Server Components',
-    'Radix UI',
+    'CitiBike',
+    'New York City',
+    'Bike Sharing',
+    'Bicycle Rentals',
+    'Cycling',
+    'Urban Mobility',
+    'Public Transportation',
+    'Bike Stations',
+    'Bike Availability',
   ],
   authors: [
     {
-      name: 'shadcn',
-      url: 'https://shadcn.com',
+      name: 'angedell',
+      url: 'https://github.com/angedell',
     },
   ],
-  creator: 'shadcn',
+  creator: 'angedell',
 
   openGraph: {
     type: 'website',
@@ -47,7 +50,7 @@ export const siteMetadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [`${siteConfig.url}/og.jpg`],
-    creator: '@shadcn',
+    creator: '@angedell',
   },
   icons: {
     icon: '/favicon.ico',
