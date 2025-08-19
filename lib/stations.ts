@@ -5,6 +5,11 @@ import { redis } from '@/lib/redis';
 const DETAIL_KEY = 'locationsdetail';
 const GEO_KEY = 'locations';
 
+/**
+ * Fetches Citibike station information from the GBFS API and saves it into Valkey.
+ *
+ * @returns {() => Promise<void>} A function that fetches data from the API and saves it into Valkey.
+ */
 export async function loadStations() {
   return (
     await apiDataLoader({
@@ -16,6 +21,10 @@ export async function loadStations() {
   )();
 }
 
+/**
+ * Saves an array of station information into Valkey.
+ * @param {object[]} stations An array of objects with `station_id`, `lon`, and `lat` properties.
+ */
 async function loadStationInformationIntoValkey(stations) {
   const pipeline = redis.pipeline();
 
