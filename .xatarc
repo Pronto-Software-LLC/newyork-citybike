@@ -1,6 +1,0 @@
-{
-  "databaseURL": "https://angedell-s-workspace-24qeiq.us-east-1.xata.sh/db/newyork-citybike",
-  "codegen": {
-    "output": "lib/xata.ts"
-  }
-}
