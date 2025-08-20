@@ -5,8 +5,12 @@ dist-ssr
 *.local
 count.txt
 .env
+.env.dev
 .nitro
 .tanstack
 .output
 .vinxi
 todos.json
+.xata
+.xatarc
+*.gen.*
