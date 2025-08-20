@@ -1,6 +1,7 @@
 import { useState, useTransition } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { signIn } from '@/lib/auth-client'
+import { Button } from '@/components/ui/Button'
 
 export const Route = createFileRoute('/signin')({
   component: SignIn,
@@ -12,9 +13,9 @@ function SignIn() {
   const [loading, startTransition] = useTransition()
   const [rememberMe, setRememberMe] = useState(false)
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <h1>Sign In</h1>
-      <button
+      <Button
         className="w-full gap-2"
         onClick={async () => {
           await signIn.social({
@@ -35,7 +36,7 @@ function SignIn() {
           ></path>
         </svg>
         Sign in with GitHub
-      </button>
+      </Button>
 
       <div className="grid gap-2">
         <label htmlFor="email">Email</label>
