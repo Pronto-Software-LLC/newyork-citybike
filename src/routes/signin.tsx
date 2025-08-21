@@ -2,6 +2,9 @@ import { useState, useTransition } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { signIn } from '@/lib/auth-client'
 import { Button } from '@/components/ui/Button'
+import { Checkbox } from '@/components/ui/Checkbox'
+import { TextField } from '@/components/ui/TextField'
+import { Label } from '@/components/ui/Field'
 
 export const Route = createFileRoute('/signin')({
   component: SignIn,
@@ -13,14 +16,14 @@ function SignIn() {
   const [loading, startTransition] = useTransition()
   const [rememberMe, setRememberMe] = useState(false)
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col w-full max-w-2xl p-8 rounded-xl bg-cyan-100 dark:bg-cyan-950">
       <h1>Sign In</h1>
       <Button
         className="w-full gap-2"
         onClick={async () => {
           await signIn.social({
             provider: 'github',
-            callbackURL: '/dashboard',
+            callbackURL: '/',
           })
         }}
       >
@@ -39,9 +42,9 @@ function SignIn() {
       </Button>
 
       <div className="grid gap-2">
-        <label htmlFor="email">Email</label>
-        <input
+        <TextField
           id="email"
+          label="Email"
           type="email"
           placeholder="m@example.com"
           required
@@ -54,14 +57,14 @@ function SignIn() {
 
       <div className="grid gap-2">
         <div className="flex items-center">
-          <label htmlFor="password">Password</label>
           <Link to="/" className="ml-auto inline-block text-sm underline">
             Forgot your password?
           </Link>
         </div>
 
-        <input
+        <TextField
           id="password"
+          label="Password"
           type="password"
           placeholder="password"
           autoComplete="password"
@@ -71,19 +74,19 @@ function SignIn() {
       </div>
 
       <div className="flex items-center gap-2">
-        {/* <checkbox
-              id="remember"
-              onClick={() => {
-                setRememberMe(!rememberMe)
-              }}
-            /> */}
+        <Checkbox
+          id="remember"
+          onClick={() => {
+            setRememberMe(!rememberMe)
+          }}
+        />
         <label htmlFor="remember">Remember me</label>
       </div>
 
-      <button
+      <Button
         type="submit"
         className="w-full"
-        disabled={loading}
+        isDisabled={loading}
         onClick={async () => {
           startTransition(async () => {
             await signIn.email(
@@ -97,7 +100,9 @@ function SignIn() {
             )
           })
         }}
-      ></button>
+      >
+        Log in
+      </Button>
     </div>
   )
 }
