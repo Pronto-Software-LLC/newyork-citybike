@@ -1,0 +1,14 @@
+services:
+  valkey:
+    image: valkey/valkey:latest
+    container_name: website_valkey
+    network_mode: bridge
+    ports:
+      - 6379:6379
+    restart: always
+    volumes:
+      - valkey_data:/data
+    command: ['valkey-server', '--appendonly', 'yes']
+
+volumes:
+  valkey_data:
