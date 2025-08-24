@@ -85,23 +85,5 @@ export async function loadNearbyStations(lat: number, lon: number) {
     })
   );
 
-  console.log('🚀 ~ loadNearbyStations ~ stations:', stations);
   return stations.filter(Boolean);
 }
-
-// // const redis = await getRedis();
-//   //load mapToUse in redis
-//   let mapToUseValkey = '';
-//   try {
-//     // mapToUseValkey = (await redis.hget('mapToUse', user.id)) || '';
-//   } catch (error) {
-//     console.log('🚀 ~ error:', error);
-//   }
-//   // console.log('🚀 ~ mapToUseValkey:', mapToUseValkey);
-
-//   const data = await client.db.nextauth_users
-//     .select(['mapsToUse'])
-//     .filter('id', user.id)
-//     .getMany();
-//   // await redis.hset('mapToUse', [user.id, data[0]['mapsToUse']]);
-//   console.log('🚀 ~ data:', mapToUseValkey, data[0]['mapsToUse']);
