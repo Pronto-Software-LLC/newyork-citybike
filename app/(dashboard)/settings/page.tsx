@@ -1,10 +1,8 @@
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  // CardAction,
   CardContent,
   CardDescription,
-  // CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -33,9 +31,6 @@ export default async function Settings() {
             </Button>{' '}
             button
           </CardDescription>
-          {/*   <CardAction>
-            <Button variant="link">Sign Up</Button>
-          </CardAction> */}
         </CardHeader>
         <div className="flex flex-col gap-6">
           <CardContent>
@@ -53,11 +48,6 @@ export default async function Settings() {
               </Select>
             </div>
           </CardContent>
-          {/* <CardFooter className="flex-col gap-2">
-              <Button type="submit" className="w-full">
-                Save
-              </Button>
-            </CardFooter> */}
         </div>
       </Card>
     </div>
