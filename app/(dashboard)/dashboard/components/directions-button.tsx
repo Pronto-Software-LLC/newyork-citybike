@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
-import React from 'react';
+import React, { useContext } from 'react';
+import { MapToUseContext } from './location-watcher';
 
 interface AppleMapsButtonProps {
   latitude: number;
@@ -15,13 +16,26 @@ export const DirectionsButton: React.FC<AppleMapsButtonProps> = ({
   label,
   labelMap,
 }) => {
+  const mapToUse = useContext(MapToUseContext);
+
   const handleClick = () => {
     // Apple Maps URL scheme
     // dirflg=b is for biking directions
     // dirflg=w is for walking directions
-    const url =
-      `https://maps.apple.com/?sll=${latitude},${longitude}&t=r&z=5` +
-      (labelMap ? `&daddr=${encodeURIComponent(labelMap)}&dirflg=b` : '');
+    let url = '';
+    if (mapToUse === 'apple') {
+      url =
+        `https://maps.apple.com/?sll=${latitude},${longitude}&t=r&z=5` +
+        (labelMap ? `&daddr=${encodeURIComponent(labelMap)}` : '');
+      window.open(url, '_blank');
+      return;
+    }
+
+    // Google Maps URL scheme
+    //https://www.google.com/maps/dir/?api=1&parameters
+
+    url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=bicycling&dir_action=navigate `;
+    // (labelMap ? `&destination_place_id=${encodeURIComponent(labelMap)}` : '');
     window.open(url, '_blank');
   };
 

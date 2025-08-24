@@ -1,6 +1,6 @@
 'use server';
 import { apiDataLoader } from '@/lib/api';
-import { redis } from '@/lib/redis';
+import { getRedis } from '@/lib/redis';
 
 const DETAIL_KEY = 'locationsdetail';
 const GEO_KEY = 'locations';
@@ -26,6 +26,7 @@ export async function loadStations() {
  * @param {object[]} stations An array of objects with `station_id`, `lon`, and `lat` properties.
  */
 async function loadStationInformationIntoValkey(stations) {
+  const redis = await getRedis();
   const pipeline = redis.pipeline();
 
   stations.forEach((station) => {

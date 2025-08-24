@@ -1,9 +1,10 @@
 'use server';
 
 import { bearings, calculateDistance } from '@/lib/distance';
-import { redis } from '@/lib/redis';
+import { getRedis } from '@/lib/redis';
 
 export async function loadNearbyStations(lat: number, lon: number) {
+  const redis = await getRedis();
   const rawResults = await redis.geosearch(
     'locations',
     'FROMLONLAT',

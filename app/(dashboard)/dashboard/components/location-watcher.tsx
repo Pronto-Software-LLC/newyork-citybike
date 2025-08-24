@@ -1,17 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { loadNearbyStations } from '../lib/stations';
 import { Station } from './station';
 import { loadStationsStatus } from '@/lib/stations-status';
 import { loadStations } from '@/lib/stations';
 import { Skeleton } from '@/components/ui/skeleton';
 
+export const MapToUseContext = createContext('');
+
 interface StationType {
   id: string;
   name: string;
   distance: number;
-  coordinates: [number, number];
+  coordinates: { lon: number; lat: number };
   distanceFormatted: string;
   num_docks_available: number;
   bikes: number;
@@ -26,7 +28,7 @@ enum LocStatus {
   NotSupported = 'Geolocation is not supported.',
 }
 
-export default function LocationWatcher() {
+export default function LocationWatcher({ mapToUse }: { mapToUse: string }) {
   const [status, setStatus] = useState<LocStatus>(LocStatus.Waiting);
   const [locationData, setLocationData] = useState<StationType[]>([]);
   const [lastUpdate, setLastUpdate] = useState(0);
@@ -94,13 +96,15 @@ export default function LocationWatcher() {
 
   return (
     <div className="p-4 rounded shadow">
-      {/* <p>Status: {status}</p> */}
-      <div className="flex flex-col gap-6">
-        {locationData &&
-          locationData.map((station) => (
-            <Station station={station} key={station.id} />
-          ))}
-      </div>
+      <MapToUseContext value={mapToUse}>
+        {/* <p>Status: {status}</p> */}
+        <div className="flex flex-col gap-6">
+          {locationData &&
+            locationData.map((station) => (
+              <Station station={station} key={station.id} />
+            ))}
+        </div>
+      </MapToUseContext>
     </div>
   );
 }
