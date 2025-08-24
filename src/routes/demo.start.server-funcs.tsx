@@ -1,9 +1,19 @@
 import fs from 'node:fs'
 import { useCallback, useState } from 'react'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
+import { createMiddleware, createServerFn } from '@tanstack/react-start'
+// import { loggingMiddleware } from '@/lib/auth'
 
 const filePath = 'todos.json'
+
+const loggingMiddleware = createMiddleware({ type: 'function' }).server(
+  async ({ next, data }) => {
+    console.log('Request received:', data)
+    const result = await next()
+    console.log('Response processed:', result)
+    return result
+  },
+)
 
 async function readTodos() {
   return JSON.parse(
@@ -22,10 +32,13 @@ async function readTodos() {
 
 const getTodos = createServerFn({
   method: 'GET',
-}).handler(async () => await readTodos())
+})
+  .middleware([loggingMiddleware])
+  .handler(async () => await readTodos())
 
 const addTodo = createServerFn({ method: 'POST' })
   .validator((d: string) => d)
+  .middleware([loggingMiddleware])
   .handler(async ({ data }) => {
     const todos = await readTodos()
     todos.push({ id: todos.length + 1, name: data })

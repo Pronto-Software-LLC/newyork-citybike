@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { createFileRoute } from '@tanstack/react-router'
 
-import { client } from '@/lib/auth-client' // import the auth client
+// import { client } from '@/lib/auth-client' // import the auth client
 
-const { data: session, error } = await client.getSession()
+// const { data: session, error } = await client.getSession()
 
 function getNames() {
   return fetch('/api/demo-names').then((res) => res.json())
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/demo/start/api-request')({
 
 function Home() {
   const [names, setNames] = useState<Array<string>>([])
-  console.log('session', session, error)
+  // console.log('session', session, error)
   useEffect(() => {
     getNames().then(setNames)
   }, [])
