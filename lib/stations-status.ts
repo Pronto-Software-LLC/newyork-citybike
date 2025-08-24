@@ -1,6 +1,6 @@
 'use server';
 import { apiDataLoader } from '@/lib/api';
-import { redis } from '@/lib/redis';
+import { getRedis } from '@/lib/redis';
 
 const DETAIL_KEY = 'station_status';
 
@@ -16,6 +16,7 @@ export async function loadStationsStatus() {
 }
 
 async function loadStationStatusIntoValkey(stations) {
+  const redis = await getRedis();
   const pipeline = redis.pipeline();
 
   stations.forEach((station) => {

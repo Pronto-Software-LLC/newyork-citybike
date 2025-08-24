@@ -1,5 +1,5 @@
 'use server';
-import { redis } from './redis';
+import { getRedis } from './redis';
 
 type DataToLoad = {
   DETAIL_KEY: string;
@@ -20,6 +20,7 @@ type DataToLoad = {
  */
 export async function apiDataLoader(options: DataToLoad) {
   return async () => {
+    const redis = await getRedis();
     const throttleKey = `${options.DETAIL_KEY}:throttle`;
 
     const isFresh = await redis.get(throttleKey);
