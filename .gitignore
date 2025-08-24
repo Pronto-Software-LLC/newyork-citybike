@@ -46,3 +46,4 @@ next-env.d.ts
 *.gen.*
 
 .tanstack
+.xata/migrations/.ledger
