@@ -5,7 +5,7 @@ export default async function Home() {
   const mapToUse = await loadSettings();
   return (
     <main>
-      <LocationWatcher mapToUse={mapToUse} />
+      <LocationWatcher mapToUse={mapToUse ?? 'apple'} />
     </main>
   );
 }
