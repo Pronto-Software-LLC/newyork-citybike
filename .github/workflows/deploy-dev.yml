@@ -24,7 +24,6 @@ jobs:
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
             cd /home/deploy/website/newyork-citybike
-            git pull origin dev
 
             # Write each environment variable line-by-line
             echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
