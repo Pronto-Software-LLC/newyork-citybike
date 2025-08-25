@@ -24,6 +24,7 @@ jobs:
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} '
             cd /home/deploy/website/newyork-citybike
+            git reset --hard
             git pull origin dev
 
             # Write each environment variable line-by-line
