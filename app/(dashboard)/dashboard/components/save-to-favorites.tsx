@@ -1,0 +1,88 @@
+'use client';
+
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Star } from 'lucide-react';
+import { formToFavorites } from '../../favorites/lib/favorites';
+
+interface LiveStationsProps {
+  station: {
+    id: string;
+    name: string;
+  };
+}
+
+export function SaveToFavorites({ station }: LiveStationsProps) {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const name = formData.get('name') as string;
+
+      // simulate API call
+      const result = await formToFavorites(name, station.id);
+      console.log(result);
+      console.log('Submitted:', name, result);
+
+      // ✅ Close the dialog after success
+      setOpen(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" onClick={() => setOpen(true)}>
+          {/* <Star fill="currentColor" /> */}
+          <Star />
+          add to favorites
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Submit your name</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            defaultValue={station.name}
+            className="w-full rounded-md border px-3 py-2"
+            required
+          />
+
+          <DialogFooter>
+            <Button type="submit" disabled={loading}>
+              {loading ? 'Saving...' : 'Save'}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

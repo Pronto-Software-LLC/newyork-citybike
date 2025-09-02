@@ -11,6 +11,7 @@ import {
 import { DirectionsButton } from './directions-button';
 import { Button } from '@/components/ui/button';
 import { BatteryCharging, Bike, CircleParking } from 'lucide-react';
+import { SaveToFavorites } from './save-to-favorites';
 
 interface LiveStationsProps {
   station: {
@@ -30,7 +31,9 @@ export function Station({ station }: LiveStationsProps) {
     <Card key={station.id}>
       <CardHeader>
         <CardTitle>{station.name}</CardTitle>
-        <CardDescription>docks available</CardDescription>
+        <CardDescription>
+          <SaveToFavorites station={station} />
+        </CardDescription>
         <CardAction className="text-2xl">
           {station.distanceFormatted}
         </CardAction>
