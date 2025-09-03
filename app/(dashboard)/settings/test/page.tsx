@@ -26,7 +26,7 @@ export default function TestPage() {
     const watchId = navigator.geolocation.watchPosition(
       async (position) => {
         const now = Date.now();
-        if (now - lastUpdate < 500) {
+        if (now - lastUpdate < 100) {
           return;
         }
         setLastUpdate(now);
