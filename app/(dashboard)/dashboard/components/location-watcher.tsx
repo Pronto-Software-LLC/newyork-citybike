@@ -12,6 +12,7 @@ export const MapToUseContext = createContext('');
 interface StationType {
   id: string;
   name: string;
+  orig_name: string;
   distance: number;
   coordinates: { lon: number; lat: number };
   distanceFormatted: string;
@@ -48,7 +49,8 @@ export default function LocationWatcher({ mapToUse }: { mapToUse: string }) {
         setLastUpdate(now);
 
         setStatus(LocStatus.Updated);
-        const { latitude, longitude } = position.coords;
+        const { latitude, longitude, speed } = position.coords;
+        console.log('🚀 ~ LocationWatcher ~ speed:', speed);
 
         try {
           await loadStations();

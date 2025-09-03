@@ -12,8 +12,12 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
-import { formToFavorites, getFavorites } from '../../favorites/lib/favorites';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  formToFavorites,
+  // getFavorites,
+  removeFromFavorites,
+} from '../../favorites/lib/favorites';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface LiveStationsProps {
   station: {
@@ -22,7 +26,7 @@ interface LiveStationsProps {
   };
 }
 
-export function SaveToFavorites({ station }: LiveStationsProps) {
+export function RemoveFromFavorites({ station }: LiveStationsProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
@@ -53,13 +57,24 @@ export function SaveToFavorites({ station }: LiveStationsProps) {
     }
   }
 
+  const removeFavMutation = useMutation({
+    mutationFn: async () => {
+      return removeFromFavorites(station.id);
+    },
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['favorites'],
+      });
+      setOpen(false);
+    },
+  });
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" onClick={() => setOpen(true)}>
-          {/* <Star fill="currentColor" /> */}
-          <Star />
-          add to favorites
+          <Star fill="currentColor" />
+          remove from favorites...
         </Button>
       </DialogTrigger>
 
@@ -80,6 +95,16 @@ export function SaveToFavorites({ station }: LiveStationsProps) {
           />
 
           <DialogFooter>
+            <Button
+              variant={'destructive'}
+              disabled={removeFavMutation.isLoading}
+              onClick={(e) => {
+                e.preventDefault();
+                removeFavMutation.mutate();
+              }}>
+              {removeFavMutation.isLoading ? 'removing' : 'remove favorite'}
+            </Button>
+            <Button>reset</Button>{' '}
             <Button type="submit" disabled={loading}>
               {loading ? 'Saving...' : 'Save'}
             </Button>

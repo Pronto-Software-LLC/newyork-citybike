@@ -78,6 +78,7 @@ export async function loadNearbyStations(lat: number, lon: number) {
           stationStatus.num_bikes_available -
           stationStatus.num_ebikes_available,
         ebikes: stationStatus.num_ebikes_available,
+        orig_name: station.name,
         // Merge station and status data
         ...station,
         ...stationStatus,
