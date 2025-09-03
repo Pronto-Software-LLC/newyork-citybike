@@ -36,8 +36,8 @@ export default function TestPage() {
 
         try {
           setStatus(LocStatus.DataReceived);
-          setTheLat(latitude);
-          setTheLon(longitude);
+          setTheLat(Number(latitude.toFixed(6)));
+          setTheLon(Number(longitude.toFixed(6)));
           setTheSpeed(speed || 0);
         } catch (err) {
           console.error(err);
