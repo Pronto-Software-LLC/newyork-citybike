@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { speedConversion } from '@mskian/speed-conversion';
 
 enum LocStatus {
   Waiting = 'Waiting for location...',
@@ -68,7 +69,7 @@ export default function TestPage() {
       <div className="flex flex-col gap-6">
         <div>Latitude: {theLat}</div>
         <div>Longitude: {theLon}</div>
-        <div>Speed: {theSpeed}</div>
+        <div>Speed: {speedConversion(theSpeed)}</div>
       </div>
     </div>
   );
