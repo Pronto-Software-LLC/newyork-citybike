@@ -58,7 +58,9 @@ export function Station({ station }: LiveStationsProps) {
         <CardTitle>{fav?.name ?? station.name}</CardTitle>
         <CardDescription>
           {fav ? (
-            <RemoveFromFavorites station={station} />
+            <RemoveFromFavorites station={station}>
+              {station.orig_name}
+            </RemoveFromFavorites>
           ) : (
             <SaveToFavorites station={station} />
           )}

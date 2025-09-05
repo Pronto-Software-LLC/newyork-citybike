@@ -23,10 +23,12 @@ interface LiveStationsProps {
   station: {
     id: string;
     name: string;
+    orig_name: string;
   };
+  children: React.ReactNode;
 }
 
-export function RemoveFromFavorites({ station }: LiveStationsProps) {
+export function RemoveFromFavorites({ station, children }: LiveStationsProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
@@ -73,7 +75,9 @@ export function RemoveFromFavorites({ station }: LiveStationsProps) {
       <DialogTrigger asChild>
         <Button variant="ghost" onClick={() => setOpen(true)}>
           <Star fill="currentColor" />
-          remove from favorites...
+          {station.name !== station.orig_name
+            ? children
+            : 'remove from favorites'}
         </Button>
       </DialogTrigger>
 
