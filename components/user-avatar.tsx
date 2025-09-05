@@ -11,6 +11,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
+import {
+  ClipboardClock,
+  House,
+  LogOut,
+  Settings,
+  Star,
+  UserRound,
+} from 'lucide-react';
 
 function initials(name: string | null | undefined): string {
   if (!name) return '';
@@ -42,15 +50,39 @@ export async function UserAvatar() {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex items-center gap-2">
+            <UserRound />
+            {user.name}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/settings">Settings</Link>
+            <Link href="/" className="flex items-center gap-2">
+              <House />
+              homepage
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/favorites" className="flex items-center gap-2">
+              <Star /> Favorites
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/history" className="flex items-center gap-2">
+              <ClipboardClock />
+              History
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/settings" className="flex items-center gap-2">
+              <Settings />
+              Settings
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <form action={signOut}>
               <Button variant="ghost" type="submit">
+                <LogOut />
                 Sign Out
               </Button>
             </form>
