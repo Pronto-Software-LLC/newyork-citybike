@@ -15,7 +15,6 @@ export async function getHistory() {
     .sort('xata.updatedAt', 'desc')
     .getMany();
   return history.map((hist) => {
-    console.log('🚀 ~ getHistory ~ hist:', hist);
     return {
       id: hist.station_id,
       updatedAt: hist.xata.updatedAt.toString(),
@@ -29,6 +28,16 @@ export async function addToHistory(stationId: string) {
     if (userId === null) {
       throw new Error('User ID is null');
     }
+    const favorite = await client.db.saved_locations
+      .select(['station_id'])
+      .filter('user.id', userId)
+      .filter('station_id', stationId)
+      .getFirst();
+    if (favorite) {
+      //don't add to history if it's in favorites
+      return;
+    }
+
     const existing = await client.db.history
       .select(['station_id', 'xata.updatedAt'])
       .filter('user.id', userId)
@@ -48,7 +57,6 @@ export async function addToHistory(stationId: string) {
   } catch (err) {
     console.error(err);
   } finally {
-    console.log('add history done');
     return await new Promise((resolve) => setTimeout(resolve, 500));
   }
 }
