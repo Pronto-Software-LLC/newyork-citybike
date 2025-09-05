@@ -14,6 +14,7 @@ services:
   valkey:
     image: valkey/valkey:latest
     container_name: website_valkey
+    network_mode: host
     restart: always
     volumes:
       - valkey_data:/data
