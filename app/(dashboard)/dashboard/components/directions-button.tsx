@@ -1,13 +1,17 @@
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
-import React, { useContext } from 'react';
-import { MapToUseContext } from './location-watcher';
+import React from 'react';
 import { LiveStationsProps } from '@/types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addToHistory } from '../../history/lib/history';
+import { loadSettings } from '../../settings/lib/save-settings';
 
 export const DirectionsButton: React.FC<LiveStationsProps> = ({ station }) => {
-  const mapToUse = useContext(MapToUseContext);
+  const { data: mapToUse } = useQuery({
+    queryKey: ['settings'],
+    queryFn: async () => await loadSettings(),
+  });
+
   const queryClient = useQueryClient();
 
   const { lat: latitude, lon: longitude } = station.coordinates;

@@ -75,9 +75,7 @@ export function RemoveFromFavorites({ station, children }: LiveStationsProps) {
       <DialogTrigger asChild>
         <Button variant="ghost" onClick={() => setOpen(true)}>
           <Star fill="currentColor" />
-          {station.name !== station.orig_name
-            ? children
-            : 'remove from favorites'}
+          {station.name !== station.orig_name ? children : 'edit favorite'}
         </Button>
       </DialogTrigger>
 

@@ -7,6 +7,8 @@ import { loadStationsStatus } from '@/lib/stations-status';
 import { loadStations } from '@/lib/stations';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLocation } from '@/components/location-provider';
+import { useQuery } from '@tanstack/react-query';
+import { loadSettings } from '../../settings/lib/save-settings';
 
 export const MapToUseContext = createContext('');
 
@@ -30,7 +32,7 @@ enum LocStatus {
   NotSupported = 'Geolocation is not supported.',
 }
 
-export default function LocationWatcher({ mapToUse }: { mapToUse: string }) {
+export default function LocationWatcher() {
   const [status, setStatus] = useState<LocStatus>(LocStatus.Waiting);
   const [locationData, setLocationData] = useState<StationType[]>([]);
   const { latitude, longitude } = useLocation();
@@ -80,14 +82,14 @@ export default function LocationWatcher({ mapToUse }: { mapToUse: string }) {
 
   return (
     <div className="p-4 rounded shadow">
-      <MapToUseContext value={mapToUse}>
-        <div className="flex flex-col gap-6">
-          {locationData &&
-            locationData.map((station) => (
-              <Station station={station} key={station.id} />
-            ))}
-        </div>
-      </MapToUseContext>
+      {/* <MapToUseContext value={mapToUse}> */}
+      <div className="flex flex-col gap-6">
+        {locationData &&
+          locationData.map((station) => (
+            <Station station={station} key={station.id} />
+          ))}
+      </div>
+      {/* </MapToUseContext> */}
     </div>
   );
 }

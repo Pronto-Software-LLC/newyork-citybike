@@ -1,10 +1,10 @@
+'use server';
 import { getUserIdFromSession } from '@/lib/session';
 import { getXataClient } from '@/lib/xata';
 
 const client = getXataClient();
 
 export async function saveSettings(value: string) {
-  'use server';
   const sessId = await getUserIdFromSession();
   if (!sessId) {
     return;
@@ -17,7 +17,6 @@ export async function saveSettings(value: string) {
 }
 
 export async function loadSettings() {
-  'use server';
   const sessId = await getUserIdFromSession();
   const data = await client.db.nextauth_users
     .select(['mapsToUse'])

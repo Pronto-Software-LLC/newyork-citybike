@@ -58,30 +58,18 @@ export async function loadNearbyStations(lat: number, lon: number) {
         typeof stationStatusJson === 'string'
           ? JSON.parse(stationStatusJson)
           : stationStatusJson;
-      // if (station.is_installed + station.is_renting !== 2) {
-      //   return null;
-      // }
+
       return {
+        // Merge station and status data
+        ...station,
+        ...stationStatus,
         id: r.member,
-        time: new Date().toISOString(),
-        distance: r.dist,
-        distanceFormatted: calculateDistance(
-          lat,
-          lon,
-          r?.coord?.lat,
-          r?.coord?.lon
-        ),
-        bearings: bearings(lat, lon, r?.coord?.lat, r?.coord?.lon),
-        // Add coordinates to the station object
         coordinates: r.coord,
         bikes:
           stationStatus.num_bikes_available -
           stationStatus.num_ebikes_available,
         ebikes: stationStatus.num_ebikes_available,
         orig_name: station.name,
-        // Merge station and status data
-        ...station,
-        ...stationStatus,
       };
     })
   );
