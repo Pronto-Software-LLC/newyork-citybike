@@ -17,25 +17,7 @@ import { getFavorites } from '../../favorites/lib/favorites';
 import { RemoveFromFavorites } from './remove-from-favorites';
 
 import StationDistance from './station-distance';
-
-export interface Coordinates {
-  lat: number;
-  lon: number;
-}
-
-interface LiveStationsProps {
-  station: {
-    id: string;
-    name: string;
-    orig_name: string;
-    distance: number;
-    coordinates: Coordinates;
-    distanceFormatted: string;
-    num_docks_available: number;
-    bikes: number;
-    ebikes: number;
-  };
-}
+import { LiveStationsProps } from '@/types';
 
 export function Station({ station }: LiveStationsProps) {
   const { data: favorites } = useQuery({
@@ -90,10 +72,7 @@ export function Station({ station }: LiveStationsProps) {
               <BatteryCharging width={80} height={80} /> {station.ebikes}
             </div>
           </Button>
-          <DirectionsButton
-            latitude={station.coordinates.lat}
-            longitude={station.coordinates.lon}
-          />
+          <DirectionsButton station={station} />
         </div>
       </CardContent>
     </Card>

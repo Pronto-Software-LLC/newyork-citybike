@@ -84,3 +84,21 @@ export interface RentalUris {
 export enum StationType {
   Classic = 'classic',
 }
+
+export interface Coordinates {
+  lat: number;
+  lon: number;
+}
+export interface LiveStationsProps {
+  station: {
+    id: string;
+    name: string;
+    orig_name: string;
+    distance: number;
+    coordinates: Coordinates;
+    distanceFormatted: string;
+    num_docks_available: number;
+    bikes: number;
+    ebikes: number;
+  };
+}

@@ -5,11 +5,6 @@ import { getXataClient } from '@/lib/xata';
 
 const client = getXataClient();
 
-// export async function addToFavorites(stationId: string) {
-//   console.log('🚀 ~ addToFavorites ~ stationId:', stationId);
-//   return new Promise((resolve) => setTimeout(resolve, 5));
-// }
-
 export async function getFavorites() {
   const userId = await getUserIdFromSession();
   if (userId === null) {
