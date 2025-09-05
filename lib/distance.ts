@@ -2,8 +2,11 @@ import convert from 'convert';
 import * as turf from '@turf/turf';
 
 function formatDistance(km: number) {
-  const feet = convert(km, 'km').to('feet');
-  return parseInt(feet.toString()) + ' ft';
+  const feet = convert(km, 'km').to('best', 'imperial');
+  if (feet.unit !== 'mi') {
+    return parseInt(feet.toString()) + ' ' + feet.unit;
+  }
+  return Number(feet.quantity.toFixed(2)).toString() + ' ' + feet.unit;
 }
 
 export function calculateDistance(

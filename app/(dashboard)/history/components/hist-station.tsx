@@ -12,8 +12,9 @@ import { Button } from '@/components/ui/button';
 import { CircleParking } from 'lucide-react';
 import { RemoveFromFavorites } from '../../dashboard/components/remove-from-favorites';
 import { LiveStationsProps } from '@/types';
+import StationDistance from '../../dashboard/components/station-distance';
 
-export function FavStation({ station }: LiveStationsProps) {
+export function HistStation({ station }: LiveStationsProps) {
   return (
     <Card key={station.id}>
       <CardHeader>
@@ -24,7 +25,7 @@ export function FavStation({ station }: LiveStationsProps) {
           </RemoveFromFavorites>
         </CardDescription>
         <CardAction className="text-2xl">
-          {/* {station.distanceFormatted} */}
+          <StationDistance {...station.coordinates} />
         </CardAction>
       </CardHeader>
       <CardContent>

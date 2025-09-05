@@ -1,4 +1,5 @@
 'use server';
+import { getRedis } from '@/lib/redis';
 import { getUserIdFromSession } from '@/lib/session';
 import { getXataClient } from '@/lib/xata';
 
@@ -6,6 +7,7 @@ const client = getXataClient();
 
 export async function getHistory() {
   const userId = await getUserIdFromSession();
+  const redis = await getRedis();
   if (userId === null) {
     throw new Error('User ID is null');
   }
@@ -14,12 +16,37 @@ export async function getHistory() {
     .filter('user.id', userId)
     .sort('xata.updatedAt', 'desc')
     .getMany();
-  return history.map((hist) => {
+
+  const res = history.map(async (hist) => {
+    const stationJson = await redis.hget(
+      'locationsdetail',
+      hist['station_id'] as string
+    );
+    const station =
+      typeof stationJson === 'string' ? JSON.parse(stationJson) : stationJson;
+
+    const stationStatusJson = await redis.hget(
+      'station_status',
+      hist['station_id'] as string
+    );
+    const stationStatus =
+      typeof stationStatusJson === 'string'
+        ? JSON.parse(stationStatusJson)
+        : stationStatusJson;
+
     return {
       id: hist.station_id,
       updatedAt: hist.xata.updatedAt.toString(),
+      ...station,
+      ...stationStatus,
+      coordinates: { lat: station.lat, lon: station.lon },
+      bikes:
+        stationStatus.num_bikes_available - stationStatus.num_ebikes_available,
+      ebikes: stationStatus.num_ebikes_available,
+      orig_name: station.name,
     };
   });
+  return await Promise.all(res);
 }
 
 export async function addToHistory(stationId: string) {

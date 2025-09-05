@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getHistory } from './lib/history';
+import { HistStation } from './components/hist-station';
 
 const History = () => {
   const {
@@ -24,14 +25,12 @@ const History = () => {
   }
 
   return (
-    <div>
-      History
-      {history?.map((item) => (
-        <div key={item.id}>
-          <p>Station ID: {item.id}</p>
-          <p>Last Visited: {Date.parse(item.updatedAt)}</p>
-        </div>
-      ))}
+    <div className="p-4 rounded shadow">
+      <div className="flex flex-col gap-6">
+        {history?.map((station) =>
+          station.id ? <HistStation key={station.id} station={station} /> : null
+        )}
+      </div>
     </div>
   );
 };

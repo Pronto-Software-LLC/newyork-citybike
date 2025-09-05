@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { getFavorites } from './lib/favorites';
-import { FavStation } from './components/fav-stations';
+import { FavStation } from './components/fav-station';
 
 export default function Favorites() {
   const {
