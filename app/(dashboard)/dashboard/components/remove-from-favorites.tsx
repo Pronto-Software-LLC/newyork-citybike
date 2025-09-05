@@ -17,7 +17,7 @@ import {
   // getFavorites,
   removeFromFavorites,
 } from '../../favorites/lib/favorites';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface LiveStationsProps {
   station: {
@@ -56,7 +56,6 @@ export function RemoveFromFavorites({ station }: LiveStationsProps) {
       });
     }
   }
-
   const removeFavMutation = useMutation({
     mutationFn: async () => {
       return removeFromFavorites(station.id);
@@ -97,12 +96,12 @@ export function RemoveFromFavorites({ station }: LiveStationsProps) {
           <DialogFooter>
             <Button
               variant={'destructive'}
-              disabled={removeFavMutation.isLoading}
+              disabled={removeFavMutation.isPending}
               onClick={(e) => {
                 e.preventDefault();
                 removeFavMutation.mutate();
               }}>
-              {removeFavMutation.isLoading ? 'removing' : 'remove favorite'}
+              {removeFavMutation.isPending ? 'removing...' : 'remove favorite'}
             </Button>
             <Button>reset</Button>{' '}
             <Button type="submit" disabled={loading}>

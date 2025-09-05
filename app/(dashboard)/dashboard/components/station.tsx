@@ -41,6 +41,8 @@ export function Station({ station }: LiveStationsProps) {
   const fav = favorites?.find((favorite) => favorite.id === station.id);
   if (fav) {
     station.name = fav?.name ?? station.name;
+  } else {
+    station.name = station.orig_name;
   }
 
   return (
