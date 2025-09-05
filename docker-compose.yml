@@ -1,20 +1,10 @@
-version: '3.9'
-
 services:
-  app:
-    build: .
-    container_name: nycbike_app
-    network_mode: host
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - valkey
-
   valkey:
     image: valkey/valkey:latest
     container_name: website_valkey
-    network_mode: host
+    network_mode: bridge
+    ports:
+      - 6379:6379
     restart: always
     volumes:
       - valkey_data:/data

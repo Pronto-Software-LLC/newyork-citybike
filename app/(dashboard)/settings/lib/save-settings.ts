@@ -9,11 +9,9 @@ export async function saveSettings(value: string) {
   if (!sessId) {
     return;
   }
-  const user = await client.db.nextauth_users.update(sessId, {
+  await client.db.nextauth_users.update(sessId, {
     mapsToUse: value,
   });
-  ``;
-  console.log('🚀 ~ saveSettings ~ user:', user);
 
   await new Promise((resolve) => setTimeout(resolve, 5)); // return {};
 }

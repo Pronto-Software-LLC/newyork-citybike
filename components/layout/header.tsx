@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { UserAvatar } from '../user-avatar';
 import Logo from './logo';
+import { Star } from 'lucide-react';
 
 export function Header() {
   return (
@@ -10,6 +11,9 @@ export function Header() {
           <Logo />
           <span className="ml-2">NYC Bike Info</span>
         </h1>
+      </Link>
+      <Link href="/favorites" className="flex items-center">
+        <Star fill="currentColor" />
       </Link>
       <nav>
         <UserAvatar />

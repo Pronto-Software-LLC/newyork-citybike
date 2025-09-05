@@ -26,6 +26,7 @@ const tables = [
       { column: "user", table: "nextauth_users_accounts" },
       { column: "user", table: "nextauth_users_sessions" },
       { column: "user", table: "nextauth_sessions" },
+      { column: "user", table: "saved_locations" },
     ],
   },
   {
@@ -76,6 +77,14 @@ const tables = [
     ],
     revLinks: [{ column: "session", table: "nextauth_users_sessions" }],
   },
+  {
+    name: "saved_locations",
+    columns: [
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+      { name: "station_id", type: "text" },
+      { name: "nickname", type: "text" },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -101,6 +110,9 @@ export type NextauthUsersSessionsRecord = NextauthUsersSessions & XataRecord;
 export type NextauthSessions = InferredTypes["nextauth_sessions"];
 export type NextauthSessionsRecord = NextauthSessions & XataRecord;
 
+export type SavedLocations = InferredTypes["saved_locations"];
+export type SavedLocationsRecord = SavedLocations & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_users: NextauthUsersRecord;
   nextauth_accounts: NextauthAccountsRecord;
@@ -108,6 +120,7 @@ export type DatabaseSchema = {
   nextauth_users_accounts: NextauthUsersAccountsRecord;
   nextauth_users_sessions: NextauthUsersSessionsRecord;
   nextauth_sessions: NextauthSessionsRecord;
+  saved_locations: SavedLocationsRecord;
 };
 
 const DatabaseClient = buildClient();

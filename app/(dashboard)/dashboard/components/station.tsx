@@ -11,13 +11,25 @@ import {
 import { DirectionsButton } from './directions-button';
 import { Button } from '@/components/ui/button';
 import { BatteryCharging, Bike, CircleParking } from 'lucide-react';
+import { SaveToFavorites } from './save-to-favorites';
+import { useQuery } from '@tanstack/react-query';
+import { getFavorites } from '../../favorites/lib/favorites';
+import { RemoveFromFavorites } from './remove-from-favorites';
+
+import StationDistance from './station-distance';
+
+export interface Coordinates {
+  lat: number;
+  lon: number;
+}
 
 interface LiveStationsProps {
   station: {
     id: string;
     name: string;
+    orig_name: string;
     distance: number;
-    coordinates: { lon: number; lat: number };
+    coordinates: Coordinates;
     distanceFormatted: string;
     num_docks_available: number;
     bikes: number;
@@ -26,13 +38,33 @@ interface LiveStationsProps {
 }
 
 export function Station({ station }: LiveStationsProps) {
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: () => {
+      return getFavorites();
+    },
+  });
+
+  const fav = favorites?.find((favorite) => favorite.id === station.id);
+  if (fav) {
+    station.name = fav?.name ?? station.name;
+  } else {
+    station.name = station.orig_name;
+  }
+
   return (
     <Card key={station.id}>
       <CardHeader>
-        <CardTitle>{station.name}</CardTitle>
-        <CardDescription>docks available</CardDescription>
+        <CardTitle>{fav?.name ?? station.name}</CardTitle>
+        <CardDescription>
+          {fav ? (
+            <RemoveFromFavorites station={station} />
+          ) : (
+            <SaveToFavorites station={station} />
+          )}
+        </CardDescription>
         <CardAction className="text-2xl">
-          {station.distanceFormatted}
+          <StationDistance {...station.coordinates} />
         </CardAction>
       </CardHeader>
       <CardContent>
