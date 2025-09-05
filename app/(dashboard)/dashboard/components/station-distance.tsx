@@ -1,7 +1,7 @@
 import { useLocation } from '@/components/location-provider';
 import { calculateDistance } from '@/lib/distance';
 import React from 'react';
-import { Coordinates } from './station';
+import { Coordinates } from '@/types';
 
 const StationDistance = (coordinates: Coordinates) => {
   const { latitude, longitude } = useLocation();
