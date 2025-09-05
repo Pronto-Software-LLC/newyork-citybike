@@ -16,13 +16,20 @@ import { useQuery } from '@tanstack/react-query';
 import { getFavorites } from '../../favorites/lib/favorites';
 import { RemoveFromFavorites } from './remove-from-favorites';
 
+import StationDistance from './station-distance';
+
+export interface Coordinates {
+  lat: number;
+  lon: number;
+}
+
 interface LiveStationsProps {
   station: {
     id: string;
     name: string;
     orig_name: string;
     distance: number;
-    coordinates: { lon: number; lat: number };
+    coordinates: Coordinates;
     distanceFormatted: string;
     num_docks_available: number;
     bikes: number;
@@ -57,7 +64,7 @@ export function Station({ station }: LiveStationsProps) {
           )}
         </CardDescription>
         <CardAction className="text-2xl">
-          {station.distanceFormatted}
+          <StationDistance {...station.coordinates} />
         </CardAction>
       </CardHeader>
       <CardContent>

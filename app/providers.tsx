@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { getQueryClient } from '@/app/get-query-client';
 import type * as React from 'react';
 import { ThemeProvider } from '@/components/theme-provider';
+import { LocationProvider } from '@/components/location-provider';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
@@ -15,7 +16,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange>
-        {children}
+        <LocationProvider>{children}</LocationProvider>
       </ThemeProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
