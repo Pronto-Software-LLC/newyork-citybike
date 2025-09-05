@@ -1,6 +1,5 @@
 'use server';
 
-import { bearings, calculateDistance } from '@/lib/distance';
 import { getRedis } from '@/lib/redis';
 
 export async function loadNearbyStations(lat: number, lon: number) {

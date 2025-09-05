@@ -7,8 +7,6 @@ import { loadStationsStatus } from '@/lib/stations-status';
 import { loadStations } from '@/lib/stations';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLocation } from '@/components/location-provider';
-import { useQuery } from '@tanstack/react-query';
-import { loadSettings } from '../../settings/lib/save-settings';
 
 export const MapToUseContext = createContext('');
 

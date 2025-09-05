@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
-import { formToFavorites, getFavorites } from '../../favorites/lib/favorites';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { formToFavorites } from '../../favorites/lib/favorites';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface LiveStationsProps {
   station: {
