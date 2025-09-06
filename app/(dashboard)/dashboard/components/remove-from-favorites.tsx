@@ -73,10 +73,12 @@ export function RemoveFromFavorites({ station, children }: LiveStationsProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" onClick={() => setOpen(true)}>
+        <div
+          onClick={() => setOpen(true)}
+          className="p-0 flex cursor-pointer align-middles items-center gap-1 text-xs font-medium hover:underline text-muted-foreground">
           <Star fill="currentColor" />
           {station.name !== station.orig_name ? children : 'edit favorite'}
-        </Button>
+        </div>
       </DialogTrigger>
 
       <DialogContent>

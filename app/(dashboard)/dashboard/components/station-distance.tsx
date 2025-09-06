@@ -1,5 +1,9 @@
 import { useLocation } from '@/components/location-provider';
-import { calculateDistance } from '@/lib/distance';
+import {
+  calculateDistance,
+  formatDistanceImperial,
+  formatDistanceMetric,
+} from '@/lib/distance';
 import React from 'react';
 import { Coordinates } from '@/types';
 
@@ -15,8 +19,14 @@ const StationDistance = (coordinates: Coordinates) => {
   }
 
   const distance = calculateDistance(latitude || 0, longitude || 0, lat, lon);
-
-  return <span>{distance}</span>;
+  const feetDistance = formatDistanceImperial(distance as number);
+  const metricDistance = formatDistanceMetric(distance as number);
+  return (
+    <div className="flex flex-col items-end">
+      {feetDistance}
+      <div className="text-sm text-muted-foreground">{metricDistance}</div>
+    </div>
+  );
 };
 
 export default StationDistance;

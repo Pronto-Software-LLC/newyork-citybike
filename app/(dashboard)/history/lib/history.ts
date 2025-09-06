@@ -87,3 +87,39 @@ export async function addToHistory(stationId: string) {
     return await new Promise((resolve) => setTimeout(resolve, 500));
   }
 }
+
+export async function clearHistory() {
+  const userId = await getUserIdFromSession();
+  if (userId === null) {
+    throw new Error('User ID is null');
+  }
+  //get all record ids first for the user
+  const records = await client.db.history
+    .select(['id'])
+    .filter('user.id', userId)
+    .getMany();
+  if (records.length === 0) {
+    return;
+  }
+  const recordIds = records.map((record) => record.id);
+  //then delete by record ids
+  await client.db.history.delete(recordIds);
+}
+
+export async function removeFromHistory(stationId: string) {
+  const userId = await getUserIdFromSession();
+  if (userId === null) {
+    throw new Error('User ID is null');
+  }
+  //get the record id first
+  const record = await client.db.history
+    .select(['id'])
+    .filter('user.id', userId)
+    .filter('station_id', stationId)
+    .getFirst();
+  if (!record) {
+    throw new Error('Record not found');
+  }
+  //then delete by record id
+  await client.db.history.delete(record.id);
+}

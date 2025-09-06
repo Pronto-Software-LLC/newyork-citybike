@@ -7,22 +7,34 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { DirectionsButton } from '@/app/(dashboard)/dashboard/components/directions-button';
+import TimeAgo from 'react-timeago';
+
 import { Button } from '@/components/ui/button';
-import { CircleParking } from 'lucide-react';
-import { RemoveFromFavorites } from '../../dashboard/components/remove-from-favorites';
+import { Trash2 } from 'lucide-react';
 import { LiveStationsProps } from '@/types';
 import StationDistance from '../../dashboard/components/station-distance';
+import { SaveToFavorites } from '../../dashboard/components/save-to-favorites';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { removeFromHistory } from '../lib/history';
 
 export function HistStation({ station }: LiveStationsProps) {
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteFromHistory } = useMutation({
+    mutationFn: async () => await removeFromHistory(station.id),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['history'],
+      });
+    },
+  });
+
   return (
     <Card key={station.id}>
       <CardHeader>
         <CardTitle>{station.name}</CardTitle>
         <CardDescription>
-          <RemoveFromFavorites station={station}>
-            {station.orig_name}
-          </RemoveFromFavorites>
+          <TimeAgo date={station.updatedAt as string} />
         </CardDescription>
         <CardAction className="text-2xl">
           <StationDistance {...station.coordinates} />
@@ -30,16 +42,13 @@ export function HistStation({ station }: LiveStationsProps) {
       </CardHeader>
       <CardContent>
         <div className="flex justify-between">
-          <Button
-            variant={
-              station.num_docks_available > 0 ? 'outline' : 'destructive'
-            }>
+          <Button variant="destructive" onClick={() => deleteFromHistory()}>
             <div className="flex items-center gap-2">
-              <CircleParking width={80} height={80} />
-              {station.num_docks_available}
+              <Trash2 width={80} height={80} />
+              delete
             </div>
           </Button>
-          <DirectionsButton station={station} />
+          <SaveToFavorites station={station} />
         </div>
       </CardContent>
     </Card>

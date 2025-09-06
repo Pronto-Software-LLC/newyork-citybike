@@ -92,6 +92,7 @@ export interface Coordinates {
 export interface LiveStationsProps {
   station: {
     id: string;
+    updatedAt?: string;
     name: string;
     orig_name: string;
     distance: number;
