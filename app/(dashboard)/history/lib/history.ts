@@ -2,10 +2,11 @@
 import { getRedis } from '@/lib/redis';
 import { getUserIdFromSession } from '@/lib/session';
 import { getXataClient } from '@/lib/xata';
+import { HistStationType } from '@/types';
 
 const client = getXataClient();
 
-export async function getHistory() {
+export async function getHistory(): Promise<HistStationType[]> {
   const userId = await getUserIdFromSession();
   const redis = await getRedis();
   if (userId === null) {
@@ -35,15 +36,15 @@ export async function getHistory() {
         : stationStatusJson;
 
     return {
-      id: hist.station_id,
-      updatedAt: hist.xata.updatedAt.toString(),
-      ...station,
-      ...stationStatus,
-      coordinates: { lat: station.lat, lon: station.lon },
-      bikes:
-        stationStatus.num_bikes_available - stationStatus.num_ebikes_available,
-      ebikes: stationStatus.num_ebikes_available,
-      orig_name: station.name,
+      id: hist.station_id as string,
+      name: station.name as string,
+      orig_name: station.name as string,
+      coordinates: { lat: station.lat as number, lon: station.lon as number },
+      num_docks_available: stationStatus.num_docks_available as number,
+      bikes: ((stationStatus.num_bikes_available as number) -
+        stationStatus.num_ebikes_available) as number,
+      ebikes: stationStatus.num_ebikes_available as number,
+      updatedAt: hist.xata.updatedAt.getTime(),
     };
   });
   return await Promise.all(res);
@@ -84,7 +85,7 @@ export async function addToHistory(stationId: string) {
   } catch (err) {
     console.error(err);
   } finally {
-    return await new Promise((resolve) => setTimeout(resolve, 500));
+    return await new Promise((resolve) => setTimeout(resolve, 5));
   }
 }
 

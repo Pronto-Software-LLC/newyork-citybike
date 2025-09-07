@@ -3,17 +3,19 @@
 import { getRedis } from '@/lib/redis';
 import { getUserIdFromSession } from '@/lib/session';
 import { getXataClient } from '@/lib/xata';
+import { FavStationType } from '@/types';
+import { getStationById } from '../../dashboard/lib/stations';
 
 const client = getXataClient();
 
-export async function getFavorites() {
+export async function getFavorites(): Promise<FavStationType[]> {
   const redis = await getRedis();
   const userId = await getUserIdFromSession();
   if (userId === null) {
     throw new Error('User ID is null');
   }
   const favorites = await client.db.saved_locations
-    .select(['station_id', 'nickname'])
+    .select(['station_id', 'nickname', 'xata.updatedAt'])
     .filter('user.id', userId)
     .getMany();
 
@@ -35,15 +37,15 @@ export async function getFavorites() {
         : stationStatusJson;
 
     return {
-      ...station,
-      ...stationStatus,
-      id: fav['station_id'],
-      name: fav['nickname'],
-      coordinates: { lat: station.lat, lon: station.lon },
-      bikes:
-        stationStatus.num_bikes_available - stationStatus.num_ebikes_available,
-      ebikes: stationStatus.num_ebikes_available,
-      orig_name: station.name,
+      id: fav.station_id as string,
+      name: fav.nickname as string,
+      coordinates: { lat: station.lat as number, lon: station.lon as number },
+      num_docks_available: stationStatus.num_docks_available as number,
+      bikes: ((stationStatus.num_bikes_available as number) -
+        stationStatus.num_ebikes_available) as number,
+      ebikes: stationStatus.num_ebikes_available as number,
+      orig_name: station.name as string,
+      addedAt: fav.xata.updatedAt.getTime(),
     };
   });
   return await Promise.all(res);
@@ -67,7 +69,7 @@ export async function removeFromFavorites(stationId: string) {
     console.error(err);
   } finally {
     console.log('removed');
-    return await new Promise((resolve) => setTimeout(resolve, 500));
+    return await new Promise((resolve) => setTimeout(resolve, 5));
   }
 }
 
@@ -102,6 +104,32 @@ export async function formToFavorites(name: string, stationId: string) {
   } catch (err) {
     console.error(err);
   } finally {
-    return await new Promise((resolve) => setTimeout(resolve, 500));
+    return await new Promise((resolve) => setTimeout(resolve, 5));
+  }
+}
+
+export async function resetFavoriteName(stationId: string) {
+  try {
+    const userId = await getUserIdFromSession();
+    if (userId === null) {
+      throw new Error('User ID is null');
+    }
+    const currStation = await getStationById(stationId);
+
+    const existing = await client.db.saved_locations
+      .select(['station_id'])
+      .filter('user.id', userId)
+      .filter('station_id', stationId)
+      .getFirst();
+    if (existing) {
+      await client.db.saved_locations.update(existing.id, {
+        nickname: currStation.name,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    console.log('removed');
+    return await new Promise((resolve) => setTimeout(resolve, 5));
   }
 }

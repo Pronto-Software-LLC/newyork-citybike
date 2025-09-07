@@ -17,9 +17,9 @@ import { getFavorites } from '../../favorites/lib/favorites';
 import { RemoveFromFavorites } from './remove-from-favorites';
 
 import StationDistance from './station-distance';
-import { LiveStationsProps } from '@/types';
+import { StationTypeProps } from '@/types';
 
-export function Station({ station }: LiveStationsProps) {
+export function Station({ station }: StationTypeProps) {
   const { data: favorites } = useQuery({
     queryKey: ['favorites'],
     queryFn: () => {
@@ -40,7 +40,7 @@ export function Station({ station }: LiveStationsProps) {
         <CardTitle>{fav?.name ?? station.name}</CardTitle>
         <CardDescription>
           {fav ? (
-            <RemoveFromFavorites station={station}>
+            <RemoveFromFavorites station={fav}>
               {station.orig_name}
             </RemoveFromFavorites>
           ) : (

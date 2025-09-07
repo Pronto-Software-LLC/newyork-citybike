@@ -13,8 +13,8 @@ import {
 import Link from 'next/link';
 import {
   ClipboardClock,
-  House,
   LogOut,
+  Radar,
   Settings,
   Star,
   UserRound,
@@ -57,8 +57,7 @@ export async function UserAvatar() {
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href="/" className="flex items-center gap-2">
-              <House />
-              homepage
+              <Radar /> Nearby
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>

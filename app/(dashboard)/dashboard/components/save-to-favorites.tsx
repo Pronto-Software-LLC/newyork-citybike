@@ -14,15 +14,9 @@ import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { formToFavorites } from '../../favorites/lib/favorites';
 import { useQueryClient } from '@tanstack/react-query';
+import { StationTypeProps } from '@/types';
 
-interface LiveStationsProps {
-  station: {
-    id: string;
-    name: string;
-  };
-}
-
-export function SaveToFavorites({ station }: LiveStationsProps) {
+export function SaveToFavorites({ station }: StationTypeProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
@@ -57,7 +51,6 @@ export function SaveToFavorites({ station }: LiveStationsProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" onClick={() => setOpen(true)}>
-          {/* <Star fill="currentColor" /> */}
           <Star />
           add to favorites
         </Button>
@@ -65,9 +58,9 @@ export function SaveToFavorites({ station }: LiveStationsProps) {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Submit your name</DialogTitle>
+          <DialogTitle>Add to favorites</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="sr-only">
+        <DialogDescription>
           Give a name to your favorite station
         </DialogDescription>
         <form onSubmit={handleSubmit} className="space-y-4">

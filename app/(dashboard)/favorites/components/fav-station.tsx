@@ -15,6 +15,7 @@ import { LiveStationsProps } from '@/types';
 import StationDistance from '../../dashboard/components/station-distance';
 
 export function FavStation({ station }: LiveStationsProps) {
+  console.log('🚀 ~ FavStation ~ station:', station);
   return (
     <Card key={station.id}>
       <CardHeader>

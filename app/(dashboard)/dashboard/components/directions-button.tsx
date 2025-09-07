@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
 import React from 'react';
-import { LiveStationsProps } from '@/types';
+import { StationTypeProps } from '@/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addToHistory } from '../../history/lib/history';
 import { loadSettings } from '../../settings/lib/save-settings';
 
-export const DirectionsButton: React.FC<LiveStationsProps> = ({ station }) => {
+export const DirectionsButton: React.FC<StationTypeProps> = ({ station }) => {
   const { data: mapToUse } = useQuery({
     queryKey: ['settings'],
     queryFn: async () => await loadSettings(),

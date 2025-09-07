@@ -14,17 +14,14 @@ import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import {
   formToFavorites,
-  // getFavorites,
   removeFromFavorites,
+  resetFavoriteName,
 } from '../../favorites/lib/favorites';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { FavStationType } from '@/types';
 
 interface LiveStationsProps {
-  station: {
-    id: string;
-    name: string;
-    orig_name: string;
-  };
+  station: FavStationType;
   children: React.ReactNode;
 }
 
@@ -41,7 +38,6 @@ export function RemoveFromFavorites({ station, children }: LiveStationsProps) {
       const formData = new FormData(e.currentTarget);
       const name = formData.get('name') as string;
 
-      // simulate API call
       const result = await formToFavorites(name, station.id);
       console.log('Submitted:', name, result);
 
@@ -61,6 +57,18 @@ export function RemoveFromFavorites({ station, children }: LiveStationsProps) {
   const removeFavMutation = useMutation({
     mutationFn: async () => {
       return removeFromFavorites(station.id);
+    },
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['favorites'],
+      });
+      setOpen(false);
+    },
+  });
+
+  const resetFavMutation = useMutation({
+    mutationFn: async () => {
+      return resetFavoriteName(station.id);
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({
@@ -107,7 +115,14 @@ export function RemoveFromFavorites({ station, children }: LiveStationsProps) {
               }}>
               {removeFavMutation.isPending ? 'removing...' : 'remove favorite'}
             </Button>
-            <Button>reset</Button>{' '}
+            <Button
+              disabled={resetFavMutation.isPending}
+              onClick={(e) => {
+                e.preventDefault();
+                resetFavMutation.mutate();
+              }}>
+              {resetFavMutation.isPending ? 'reseting...' : 'reset name'}
+            </Button>
             <Button type="submit" disabled={loading}>
               {loading ? 'Saving...' : 'Save'}
             </Button>
