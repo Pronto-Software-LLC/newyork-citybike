@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadNearbyStations } from '../lib/stations';
 import { Station } from './station';
 import { loadStationsStatus } from '@/lib/stations-status';
@@ -9,19 +9,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useLocation } from '@/components/location-provider';
 import { StationType } from '@/types';
 
-// export const MapToUseContext = createContext('');
-
-// interface StationType {
-//   id: string;
-//   name: string;
-//   orig_name: string;
-//   distance: number;
-//   coordinates: { lon: number; lat: number };
-//   distanceFormatted: string;
-//   num_docks_available: number;
-//   bikes: number;
-//   ebikes: number;
-// }
 
 enum LocStatus {
   Waiting = 'Waiting for location...',

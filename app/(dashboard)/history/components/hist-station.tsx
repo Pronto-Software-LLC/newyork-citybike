@@ -11,13 +11,13 @@ import TimeAgo from 'react-timeago';
 
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
-import { LiveStationsProps } from '@/types';
+import { HistStationTypeProps } from '@/types';
 import StationDistance from '../../dashboard/components/station-distance';
 import { SaveToFavorites } from '../../dashboard/components/save-to-favorites';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeFromHistory } from '../lib/history';
 
-export function HistStation({ station }: LiveStationsProps) {
+export function HistStation({ station }: HistStationTypeProps) {
   const queryClient = useQueryClient();
 
   const { mutate: deleteFromHistory } = useMutation({
@@ -34,7 +34,7 @@ export function HistStation({ station }: LiveStationsProps) {
       <CardHeader>
         <CardTitle>{station.name}</CardTitle>
         <CardDescription>
-          <TimeAgo date={station.updatedAt as string} />
+          <TimeAgo date={new Date(station.updatedAt).toISOString()} />
         </CardDescription>
         <CardAction className="text-2xl">
           <StationDistance {...station.coordinates} />

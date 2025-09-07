@@ -41,3 +41,11 @@ export interface HistStationType extends StationType {
 export interface StationTypeProps {
   station: StationType;
 }
+
+export interface FavStationTypeProps {
+  station: FavStationType;
+}
+
+export interface HistStationTypeProps {
+  station: HistStationType;
+}

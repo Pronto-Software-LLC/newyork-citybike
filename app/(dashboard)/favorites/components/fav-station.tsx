@@ -11,11 +11,10 @@ import { DirectionsButton } from '@/app/(dashboard)/dashboard/components/directi
 import { Button } from '@/components/ui/button';
 import { CircleParking } from 'lucide-react';
 import { RemoveFromFavorites } from '../../dashboard/components/remove-from-favorites';
-import { LiveStationsProps } from '@/types';
+import { FavStationTypeProps } from '@/types';
 import StationDistance from '../../dashboard/components/station-distance';
 
-export function FavStation({ station }: LiveStationsProps) {
-  console.log('🚀 ~ FavStation ~ station:', station);
+export function FavStation({ station }: FavStationTypeProps) {
   return (
     <Card key={station.id}>
       <CardHeader>
