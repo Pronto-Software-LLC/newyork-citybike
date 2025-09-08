@@ -14,17 +14,13 @@ export function Demo() {
     <Carousel className="w-full max-w-sm md:max-w-lg lg:max-w-xl">
       <CarouselContent>
         <CarouselItem key="1">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
-                <h2 className="text-2xl font-semibold">
-                  Have quick access to all the nearby CitiBike stations
-                </h2>
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
+                <h2 className="text-2xl font-semibold">Nearby stations</h2>
                 <p>See real time status of all the bikes</p>
                 <ol>
-                  <li>
-                    1. See how distant the stations are (both in miles and km)
-                  </li>
+                  <li>1. See how distant the stations are</li>
                   <li>2. Available stalls</li>
                   <li>3. Available regular bikes</li>
                   <li>4. Available electric bikes</li>
@@ -32,7 +28,7 @@ export function Demo() {
                 </ol>
                 <Image
                   src="/demo/demo01.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
@@ -42,9 +38,9 @@ export function Demo() {
         </CarouselItem>
 
         <CarouselItem key="2">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
                 <h2 className="text-2xl font-semibold">
                   Add stations to your favorites
                 </h2>
@@ -54,7 +50,7 @@ export function Demo() {
                 </ol>
                 <Image
                   src="/demo/demo02.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
@@ -64,16 +60,16 @@ export function Demo() {
         </CarouselItem>
 
         <CarouselItem key="3">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
                 <h2 className="text-2xl font-semibold">
                   Add stations to your favorites
                 </h2>
                 <p>Favorite stations appear with optional custom name</p>
                 <Image
                   src="/demo/demo03.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
@@ -83,13 +79,13 @@ export function Demo() {
         </CarouselItem>
 
         <CarouselItem key="4">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
                 <h2 className="text-2xl font-semibold">Access Favorites </h2>
                 <Image
                   src="/demo/demo04.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
@@ -99,9 +95,9 @@ export function Demo() {
         </CarouselItem>
 
         <CarouselItem key="5">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
                 <h2 className="text-2xl font-semibold">Access History </h2>
                 <p>
                   Whenever you click the Navigation button o a station, it gets
@@ -115,7 +111,7 @@ export function Demo() {
                 </ol>
                 <Image
                   src="/demo/demo05.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
@@ -125,9 +121,9 @@ export function Demo() {
         </CarouselItem>
 
         <CarouselItem key="6">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
                 <h2 className="text-2xl font-semibold">Access the settings </h2>
                 <p>Click on the user image to access the menu</p>
                 <ol>
@@ -135,7 +131,7 @@ export function Demo() {
                 </ol>
                 <Image
                   src="/demo/demo06.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
@@ -145,14 +141,14 @@ export function Demo() {
         </CarouselItem>
 
         <CarouselItem key="7">
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col gap-3 aspect-square justify-center">
+              <CardContent className="flex flex-col gap-2 aspect-square justify-center">
                 <h2 className="text-2xl font-semibold">Access the settings </h2>
                 <p>Chose which map to use between Apple and Google Maps</p>
                 <Image
                   src="/demo/demo07.jpeg"
-                  width={500}
+                  width={350}
                   height={500}
                   alt="Picture of the author"
                 />
