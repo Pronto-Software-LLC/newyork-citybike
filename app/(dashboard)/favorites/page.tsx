@@ -24,6 +24,10 @@ export default function Favorites() {
     return <div>Error</div>;
   }
 
+  if (!favorites || favorites.length === 0) {
+    return <div className="p-4 rounded shadow">No favorites yet.</div>;
+  }
+
   return (
     <div className="p-4 rounded shadow">
       <div className="flex justify-between items-center pb-4">
