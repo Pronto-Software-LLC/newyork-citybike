@@ -32,6 +32,7 @@ export interface StationType {
 
 export interface FavStationType extends StationType {
   addedAt: number;
+  distance?: number;
 }
 
 export interface HistStationType extends StationType {

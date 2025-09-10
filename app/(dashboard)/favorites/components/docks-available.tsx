@@ -12,10 +12,10 @@ const DocksAvailable = ({ station }: FavStationTypeProps) => {
     queryKey: ['nextStation', station.id],
     queryFn: async () => await nextFavoriteStation(station.coordinates),
     staleTime: 1000,
-    enabled: station.num_docks_available === 0,
+    enabled: station.num_docks_available > 2 ? false : true,
   });
 
-  if (station.num_docks_available > 0) {
+  if (station.num_docks_available > 2) {
     return (
       <div className="flex justify-between">
         <Button variant={'outline'}>
