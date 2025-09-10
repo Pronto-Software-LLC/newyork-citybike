@@ -38,20 +38,20 @@ export function SortBy({ favorites, onSortChange }: SortByProps) {
     const distanceCmp = (a: FavStationType, b: FavStationType) =>
       (a.distance || 0) - (b.distance || 0);
     switch (value) {
-      case 'dist-asc':
+      case 'dist-desc':
         sortedFavorites.sort(distanceCmp);
         break;
-      case 'dist-desc':
+      case 'dist-asc':
         sortedFavorites.sort(distanceCmp).reverse();
         break;
-      case 'date-asc':
+      case 'date-desc':
         sortedFavorites.sort(
           (a, b) =>
             new Date(a.addedAt || '').getTime() -
             new Date(b.addedAt || '').getTime()
         );
         break;
-      case 'date-desc':
+      case 'date-asc':
         sortedFavorites.sort(
           (a, b) =>
             new Date(b.addedAt || '').getTime() -
