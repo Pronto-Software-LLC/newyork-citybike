@@ -144,7 +144,7 @@ export async function nextFavoriteStation(coordinates: Coordinates) {
   );
 
   for (const station of nearbyStations) {
-    if (station.num_docks_available > 0) {
+    if (station.num_docks_available > 2) {
       return station;
     }
   }
