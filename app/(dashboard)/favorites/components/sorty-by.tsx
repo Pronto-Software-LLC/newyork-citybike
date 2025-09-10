@@ -32,6 +32,9 @@ export function SortBy({ favorites, onSortChange }: SortByProps) {
     }
     return 0;
   }
+  favorites.forEach((fav) => {
+    fav.distance = calcDistance(fav.coordinates);
+  });
 
   function handleSortChange(value: string) {
     const sortedFavorites = [...favorites];
@@ -39,10 +42,10 @@ export function SortBy({ favorites, onSortChange }: SortByProps) {
       (a.distance || 0) - (b.distance || 0);
     switch (value) {
       case 'dist-desc':
-        sortedFavorites.sort(distanceCmp);
+        sortedFavorites.sort(distanceCmp).reverse();
         break;
       case 'dist-asc':
-        sortedFavorites.sort(distanceCmp).reverse();
+        sortedFavorites.sort(distanceCmp);
         break;
       case 'date-desc':
         sortedFavorites.sort(
