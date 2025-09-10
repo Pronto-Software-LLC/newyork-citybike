@@ -3,8 +3,11 @@
 import { getRedis } from '@/lib/redis';
 import { getUserIdFromSession } from '@/lib/session';
 import { getXataClient } from '@/lib/xata';
-import { FavStationType } from '@/types';
-import { getStationById } from '../../dashboard/lib/stations';
+import { Coordinates, FavStationType } from '@/types';
+import {
+  getStationById,
+  loadNearbyStations,
+} from '../../dashboard/lib/stations';
 
 const client = getXataClient();
 
@@ -131,5 +134,18 @@ export async function resetFavoriteName(stationId: string) {
   } finally {
     console.log('removed');
     return await new Promise((resolve) => setTimeout(resolve, 5));
+  }
+}
+
+export async function nextFavoriteStation(coordinates: Coordinates) {
+  const nearbyStations = await loadNearbyStations(
+    coordinates.lat,
+    coordinates.lon
+  );
+
+  for (const station of nearbyStations) {
+    if (station.num_docks_available > 0) {
+      return station;
+    }
   }
 }
