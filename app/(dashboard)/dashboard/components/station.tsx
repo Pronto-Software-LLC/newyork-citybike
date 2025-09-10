@@ -1,6 +1,4 @@
 'use client';
-
-// import { Button } from '@/components/ui/button';
 import {
   Card,
   CardAction,
@@ -10,56 +8,47 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-// import { DialogHeader } from '@/components/ui/dialog';
-// import { ScrollArea } from '@/components/ui/scroll-area';
-// import {
-//   Dialog,
-//   DialogTrigger,
-//   DialogContent,
-//   DialogTitle,
-//   DialogDescription,
-// } from '@/components/ui/dialog';
 import { DirectionsButton } from './directions-button';
 import { Button } from '@/components/ui/button';
-import {
-  BatteryCharging,
-  Bike,
-  ChevronDown,
-  CircleParking,
-} from 'lucide-react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { BatteryCharging, Bike, CircleParking } from 'lucide-react';
+import { SaveToFavorites } from './save-to-favorites';
+import { useQuery } from '@tanstack/react-query';
+import { getFavorites } from '../../favorites/lib/favorites';
+import { RemoveFromFavorites } from './remove-from-favorites';
 
-interface LiveStationsProps {
-  station: {
-    id: string;
-    name: string;
-    distance: number;
-    coordinates: [number, number];
-    distanceFormatted: string;
-    num_docks_available: number;
-    bikes: number;
-    ebikes: number;
-  };
-}
+import StationDistance from './station-distance';
+import { StationTypeProps } from '@/types';
 
-export function Station({ station }: LiveStationsProps) {
+export function Station({ station }: StationTypeProps) {
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: () => {
+      return getFavorites();
+    },
+  });
+
+  const fav = favorites?.find((favorite) => favorite.id === station.id);
+  if (fav) {
+    station.name = fav?.name ?? station.name;
+  } else {
+    station.name = station.orig_name;
+  }
+
   return (
     <Card key={station.id}>
       <CardHeader>
-        <CardTitle>{station.name}</CardTitle>
-        <CardDescription>docks available</CardDescription>
+        <CardTitle>{fav?.name ?? station.name}</CardTitle>
+        <CardDescription>
+          {fav ? (
+            <RemoveFromFavorites station={fav}>
+              {station.orig_name}
+            </RemoveFromFavorites>
+          ) : (
+            <SaveToFavorites station={station} />
+          )}
+        </CardDescription>
         <CardAction className="text-2xl">
-          {station.distanceFormatted}
+          <StationDistance {...station.coordinates} />
         </CardAction>
       </CardHeader>
       <CardContent>
@@ -83,33 +72,9 @@ export function Station({ station }: LiveStationsProps) {
               <BatteryCharging width={80} height={80} /> {station.ebikes}
             </div>
           </Button>
-          <DirectionsButton
-            latitude={station.coordinates[1]}
-            longitude={station.coordinates[0]}
-            labelMap={station.name}
-          />
+          <DirectionsButton station={station} />
         </div>
       </CardContent>
-      {/* Uncomment if you want to add a dialog for more details */}
-      {/* <Dialog>
-        <DialogTrigger>
-          <Button>details</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>details</DialogTitle>
-            <DialogDescription>
-              <ScrollArea className="h-[200px] min-w-screen rounded-md border p-4">
-                <pre>{JSON.stringify(station, null, 2)}</pre>
-              </ScrollArea>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog> */}
-
-      {/* <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter> */}
     </Card>
   );
 }

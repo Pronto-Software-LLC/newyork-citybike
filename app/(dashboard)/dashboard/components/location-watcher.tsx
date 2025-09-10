@@ -6,17 +6,9 @@ import { Station } from './station';
 import { loadStationsStatus } from '@/lib/stations-status';
 import { loadStations } from '@/lib/stations';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLocation } from '@/components/location-provider';
+import { StationType } from '@/types';
 
-interface StationType {
-  id: string;
-  name: string;
-  distance: number;
-  coordinates: [number, number];
-  distanceFormatted: string;
-  num_docks_available: number;
-  bikes: number;
-  ebikes: number;
-}
 
 enum LocStatus {
   Waiting = 'Waiting for location...',
@@ -29,25 +21,12 @@ enum LocStatus {
 export default function LocationWatcher() {
   const [status, setStatus] = useState<LocStatus>(LocStatus.Waiting);
   const [locationData, setLocationData] = useState<StationType[]>([]);
-  const [lastUpdate, setLastUpdate] = useState(0);
+  const { latitude, longitude } = useLocation();
 
   useEffect(() => {
-    if (!('geolocation' in navigator)) {
-      setStatus(LocStatus.NotSupported);
-      return;
-    }
-
-    const watchId = navigator.geolocation.watchPosition(
-      async (position) => {
-        const now = Date.now();
-        if (now - lastUpdate < 5000) {
-          return;
-        }
-        setLastUpdate(now);
-
+    const fetchData = async () => {
+      if (typeof latitude === 'number' && typeof longitude === 'number') {
         setStatus(LocStatus.Updated);
-        const { latitude, longitude } = position.coords;
-
         try {
           await loadStations();
           await loadStationsStatus();
@@ -58,16 +37,12 @@ export default function LocationWatcher() {
           console.error(err);
           setStatus(LocStatus.Error);
         }
-      },
-      (error) => {
-        console.error(error);
-        // setStatus(`Error: ${error.message}`);
-      },
-      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, [lastUpdate]);
+      } else if (latitude === null || longitude === null) {
+        setStatus(LocStatus.Waiting);
+      }
+    };
+    fetchData();
+  }, [latitude, longitude]);
 
   if (status === LocStatus.NotSupported) {
     return (
@@ -76,10 +51,12 @@ export default function LocationWatcher() {
       </div>
     );
   }
-  //bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm
   if (locationData.length === 0) {
     return (
       <div className="p-4 rounded shadow">
+        <div className="flex justify-between items-center pb-4">
+          <h1 className="text-2xl font-bold mb-4 ">Loading nearby stations</h1>
+        </div>
         <div className="flex flex-col gap-6">
           <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
           <Skeleton className="h-[125px]  rounded-xl  border py-6 shadow-sm" />
@@ -94,7 +71,9 @@ export default function LocationWatcher() {
 
   return (
     <div className="p-4 rounded shadow">
-      {/* <p>Status: {status}</p> */}
+      <div className="flex justify-between items-center pb-4">
+        <h1 className="text-2xl font-bold mb-4 ">Nearby</h1>
+      </div>
       <div className="flex flex-col gap-6">
         {locationData &&
           locationData.map((station) => (

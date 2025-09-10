@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+.xata
+
+*.gen.*
+
+.tanstack
+.xata/migrations/.ledger
+docker-compose.yml

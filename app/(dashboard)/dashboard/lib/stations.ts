@@ -1,9 +1,42 @@
 'use server';
 
-import { bearings, calculateDistance } from '@/lib/distance';
-import { redis } from '@/lib/redis';
+import { getRedis } from '@/lib/redis';
+import { StationType } from '@/types';
 
-export async function loadNearbyStations(lat: number, lon: number) {
+export async function getStationById(stationId: string): Promise<StationType> {
+  const redis = await getRedis();
+  const stationJson = await redis.hget('locationsdetail', stationId);
+  const station =
+    typeof stationJson === 'string' ? JSON.parse(stationJson) : stationJson;
+
+  const stationStatusJson = await redis.hget('station_status', stationId);
+  const stationStatus =
+    typeof stationStatusJson === 'string'
+      ? JSON.parse(stationStatusJson)
+      : stationStatusJson;
+
+  if (!station || !stationStatus) {
+    throw new Error('Station not found');
+  }
+
+  return {
+    id: stationId,
+    name: station.name,
+    orig_name: station.name as string,
+    coordinates: { lat: station.lat as number, lon: station.lon as number },
+    num_docks_available: stationStatus.num_docks_available as number,
+    bikes:
+      (stationStatus.num_bikes_available as number) -
+      (stationStatus.num_ebikes_available as number),
+    ebikes: stationStatus.num_ebikes_available as number,
+  };
+}
+
+export async function loadNearbyStations(
+  lat: number,
+  lon: number
+): Promise<StationType[]> {
+  const redis = await getRedis();
   const rawResults = await redis.geosearch(
     'locations',
     'FROMLONLAT',
@@ -57,29 +90,17 @@ export async function loadNearbyStations(lat: number, lon: number) {
         typeof stationStatusJson === 'string'
           ? JSON.parse(stationStatusJson)
           : stationStatusJson;
-      // if (station.is_installed + station.is_renting !== 2) {
-      //   return null;
-      // }
+
       return {
         id: r.member,
-        time: new Date().toISOString(),
-        distance: r.dist,
-        distanceFormatted: calculateDistance(
-          lat,
-          lon,
-          r?.coord?.lat,
-          r?.coord?.lon
-        ),
-        bearings: bearings(lat, lon, r?.coord?.lat, r?.coord?.lon),
-        // Add coordinates to the station object
+        name: station.name,
+        orig_name: station.name as string,
         coordinates: r.coord,
+        num_docks_available: stationStatus.num_docks_available,
         bikes:
           stationStatus.num_bikes_available -
           stationStatus.num_ebikes_available,
         ebikes: stationStatus.num_ebikes_available,
-        // Merge station and status data
-        ...station,
-        ...stationStatus,
       };
     })
   );

@@ -1,6 +1,6 @@
-import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 import { siteMetadata, siteViewport } from '@/config/site';
+import Providers from './providers';
 
 export const metadata = {
   ...siteMetadata,
@@ -19,13 +19,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
